@@ -11,8 +11,8 @@ export const initMap = (id: string): void => {
     //load google map by element id
     loader.load().then(() => {
         map = new google.maps.Map(document.getElementById(id), {
-            center: { lat: -34.397, lng: 150.644 },
-            zoom: 8,
+            center: { lat: 51.844, lng: 3.96 },
+            zoom: 15,
         });
 
         //get location and add marker on click event
