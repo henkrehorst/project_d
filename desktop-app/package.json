@@ -245,7 +245,8 @@
     "webpack-cli": "^4.2.0",
     "webpack-dev-server": "^3.11.0",
     "webpack-merge": "^5.4.0",
-    "yarn-deduplicate": "^3.1.0"
+    "yarn-deduplicate": "^3.1.0",
+    "@types/google.maps": "^3.44.3"
   },
   "dependencies": {
     "electron-debug": "^3.1.0",
@@ -256,7 +257,13 @@
     "react-dom": "^17.0.1",
     "react-router-dom": "^5.2.0",
     "regenerator-runtime": "^0.13.5",
-    "source-map-support": "^0.5.19"
+    "source-map-support": "^0.5.19",
+    "@chakra-ui/icons": "^1.0.12",
+    "@chakra-ui/react": "^1.6.0",
+    "@emotion/react": "^11.1.5",
+    "@emotion/styled": "^11.3.0",
+    "@googlemaps/js-api-loader": "^1.11.4",
+    "framer-motion": "^4.1.11"
   },
   "devEngines": {
     "node": ">=10.x",
