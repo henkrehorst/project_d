@@ -1,9 +1,9 @@
 import {Box, Flex} from "@chakra-ui/react";
 import {NavBar} from "../components/navBar";
 import {HistoryView} from "../components/historyView";
-import MapView from "../components/mapView";
 import { FunctionComponent } from "react";
 import React from "react";
+import GoogleMapsView from "../components/googleMapsView";
 
 interface PageProps {
 }
@@ -17,7 +17,7 @@ const GoogleMap: FunctionComponent<PageProps> = () => {
           <HistoryView/>
         </Box>
         <Box flex={1}>
-          <MapView/>
+          <GoogleMapsView/>
         </Box>
       </Flex>
     </>
