@@ -40,7 +40,7 @@ band_arr = band_arr[x_coordinate_1:x_coordinate_2,y_coordinate_1: y_coordinate_2
 
 iterate = 0
 
-with open('data.json', 'w') as json_file:
+with open('data.json', 'w') as json_file:     
     jsonList = []
     i = 0
     for arr1 in band_arr:
@@ -48,11 +48,9 @@ with open('data.json', 'w') as json_file:
         j = 0
         for val in arr1:
             j += 1
-            y = createPoint(iterate, i,j, val)
+            y = createPoint(iterate, int(i),int(j), float(val))
             jsonList.append(y)
-            
-
             iterate += 1
-    json_file.write(str(jsonList))
+    json.dump(jsonList, json_file, indent=len(jsonList[0]))
     json_file.close()
 
