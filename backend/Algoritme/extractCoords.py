@@ -23,11 +23,6 @@ else:
     except ValueError:
         manual()
 
-
-#def write_json(data, filename='data.json'):
-#    with open(filename,'w') as f:
-#        json.dump(data, f, indent=4)
-
 def createPoint(iterator,x,y,z):
     newJson = {}    
     newJson["NAME"] = "POINT" + str(iterator)
@@ -46,7 +41,6 @@ band_arr = band_arr[x_coordinate_1:x_coordinate_2,y_coordinate_1: y_coordinate_2
 iterate = 0
 
 with open('data.json', 'w') as json_file:
-#    data = json.load(json_file) 
     jsonList = []
     i = 0
     for arr1 in band_arr:
@@ -55,13 +49,10 @@ with open('data.json', 'w') as json_file:
         for val in arr1:
             j += 1
             y = createPoint(iterate, i,j, val)
-            #print(str(y) + ',')
             jsonList.append(y)
             
 
             iterate += 1
     json_file.write(str(jsonList))
     json_file.close()
-#        jsonList.append(createPoint(iterate, i,j,band_arr[i][j]))
 
-#print(jsonList)
