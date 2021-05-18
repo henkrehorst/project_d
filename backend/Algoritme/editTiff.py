@@ -5,7 +5,6 @@ from PIL import Image
 import numpy as np
 import sys
 
-
 def manual():
     print("\n\tTO EDIT: \n\teditTiff.py -e [tiff filename] [x coordinate] [y coordinate] [new value]\n")
     print("\n\tTO GET VALUE: \n\teditTiff.py -g [tiff filename] [x coordinate] [y coordinate]\n")
