@@ -53,19 +53,19 @@ class QuadrilateralFilter:
             return False
         return True
         
-originalXyzFile = 'goeree.xyz'
-newXyzFile = 'newGoeree2.xyz'
-
-fhandle = open(originalXyzFile, 'r')
-
 left1 = Point(55755.5, 429251.05294117646)
 right1 = Point(55773.5, 429213.94705882354)
 left2 = Point(52601.5, 427721.05294117646)
 right2 = Point(52619.5, 427683.94705882354)
 
+originalXyzFile = 'goeree.xyz'
+newXyzFile = 'newGoeree3.xyz'
+
+fhandle = open(originalXyzFile, 'r')
+filteredXyz = open(newXyzFile, 'w')
+
 qFilter = QuadrilateralFilter(left1, left2, right1, right2)
 
-filteredXyz = open(newXyzFile, 'w')
 
 # Here we parse through each line of the original XYZ file, test if its point is in the quadrilateral, and if it does we add it to the new xyz file
 i = 0
