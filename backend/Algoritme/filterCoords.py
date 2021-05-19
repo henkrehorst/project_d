@@ -53,8 +53,10 @@ class QuadrilateralFilter:
             return False
         return True
         
-         
-fhandle = open('goeree.xyz', 'r')
+originalXyzFile = 'goeree.xyz'
+newXyzFile = 'newGoeree2.xyz'
+
+fhandle = open(originalXyzFile, 'r')
 
 left1 = Point(55755.5, 429251.05294117646)
 right1 = Point(55773.5, 429213.94705882354)
@@ -63,8 +65,9 @@ right2 = Point(52619.5, 427683.94705882354)
 
 qFilter = QuadrilateralFilter(left1, left2, right1, right2)
 
-filteredXyz = open('newGoeree.xyz', 'w')
+filteredXyz = open(newXyzFile, 'w')
 
+# Here we parse through each line of the original XYZ file, test if its point is in the quadrilateral, and if it does we add it to the new xyz file
 i = 0
 for line in fhandle:
     for val in line.strip().split(" "):
@@ -77,15 +80,3 @@ for line in fhandle:
             tempPoint = Point(x,y)
             if qFilter.withinQuadrilateral(tempPoint):
                 filteredXyz.write(str(tempPoint.x) + " " + str(tempPoint.y) + " " + str(val) + "\n")
-
-
-
-
-
-
-
-
-
-
-
-
