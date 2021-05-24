@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_restful import Api, Resource
 from squareMaker import makeSquare
+from filterCoords import RunFilter
 
 app = Flask(__name__)
 api = Api(app)
@@ -12,9 +13,13 @@ class Algorithm(Resource):
         XCoordinate2 = float(coordinates.split('-')[1].split('_')[0])
         YCoordinate2 = float(coordinates.split('-')[1].split('_')[1])
 
-        return {"Filename": filename, "Square": makeSquare(XCoordinate1,YCoordinate1,XCoordinate2,YCoordinate2)}
+        square = makeSquare(XCoordinate1,YCoordinate1,XCoordinate2,YCoordinate2)
 
-api.add_resource(Algorithm, "/algorithm")
+        newfilename = RunFilter(filename, square["left1"]["x"],square["left1"]["y"],square["right1"]["x"],square["right1"]["y"],square["right2"]["x"],square["right2"]["y"],square["left2"]["x"],square["left2"]["y"])
+
+        return {"Filename": newfilename}
+
+api.add_resource(Algorithm, "/algorithm/<string:filename>/<string:coordinates>")
 
 if __name__ == "__main__":
     app.run(debug=True)
