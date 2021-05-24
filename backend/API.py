@@ -1,5 +1,6 @@
 from flask import Flask
 from flask_restful import Api, Resource
+from squareMaker import makeSquare
 
 app = Flask(__name__)
 api = Api(app)
@@ -17,3 +18,4 @@ api.add_resource(Algorithm, "/algorithm")
 
 if __name__ == "__main__":
     app.run(debug=True)
+
