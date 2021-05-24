@@ -53,30 +53,41 @@ class QuadrilateralFilter:
             return False
         return True
         
-left1 = Point(55755.5, 429251.05294117646)
-right1 = Point(55773.5, 429213.94705882354)
-left2 = Point(52601.5, 427721.05294117646)
-right2 = Point(52619.5, 427683.94705882354)
+# originalXyzFile = 'goeree.xyz'
+# newXyzFile = 'newGoeree3.xyz'
 
-originalXyzFile = 'goeree.xyz'
-newXyzFile = 'newGoeree3.xyz'
+# fhandle = open(originalXyzFile, 'r')
+# filteredXyz = open(newXyzFile, 'w')
 
-fhandle = open(originalXyzFile, 'r')
-filteredXyz = open(newXyzFile, 'w')
-
-qFilter = QuadrilateralFilter(left1, left2, right1, right2)
+# qFilter = QuadrilateralFilter(left1, left2, right1, right2)
 
 
 # Here we parse through each line of the original XYZ file, test if its point is in the quadrilateral, and if it does we add it to the new xyz file
-i = 0
-for line in fhandle:
-    for val in line.strip().split(" "):
-        i+= 1
-        if i % 3 == 1:
-            x = float(val)
-        if i % 3 == 2:
-            y = float(val)
-        if i % 3 == 0:
-            tempPoint = Point(x,y)
-            if qFilter.withinQuadrilateral(tempPoint):
-                filteredXyz.write(str(tempPoint.x) + " " + str(tempPoint.y) + " " + str(val) + "\n")
+def RunFilter(oldFile, left1x, left1y, right1x, right1y, right2x, right2y, left2x, left2y):
+
+    originalXyzFile = oldFile
+    newXyzFile = "new" + oldFile
+
+    fhandle = open(originalXyzFile, 'r')
+    filteredXyz = open(newXyzFile, 'w')
+
+    left1 = Point(left1x, left1y)
+    left2 = Point(left2x, left2y)
+    right1 = Point(right1x, right1y)
+    right2 = Point(right2x, right2y)
+
+    qFilter = QuadrilateralFilter(left1, left2, right1, right2)
+
+
+    i = 0
+    for line in fhandle:
+        for val in line.strip().split(" "):
+            i+= 1
+            if i % 3 == 1:
+                x = float(val)
+            if i % 3 == 2:
+                y = float(val)
+            if i % 3 == 0:
+                tempPoint = Point(x,y)
+                if qFilter.withinQuadrilateral(tempPoint):
+                    filteredXyz.write(str(tempPoint.x) + " " + str(tempPoint.y) + " " + str(val) + "\n")
