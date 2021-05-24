@@ -52,19 +52,9 @@ class QuadrilateralFilter:
         if self.rightEdge.GetXForY(p.y) < p.x:
             return False
         return True
-        
-# originalXyzFile = 'goeree.xyz'
-# newXyzFile = 'newGoeree3.xyz'
-
-# fhandle = open(originalXyzFile, 'r')
-# filteredXyz = open(newXyzFile, 'w')
-
-# qFilter = QuadrilateralFilter(left1, left2, right1, right2)
-
 
 # Here we parse through each line of the original XYZ file, test if its point is in the quadrilateral, and if it does we add it to the new xyz file
 def RunFilter(oldFile, left1x, left1y, right1x, right1y, right2x, right2y, left2x, left2y):
-
     originalXyzFile = oldFile
     newXyzFile = "new" + oldFile
 
@@ -77,7 +67,6 @@ def RunFilter(oldFile, left1x, left1y, right1x, right1y, right2x, right2y, left2
     right2 = Point(right2x, right2y)
 
     qFilter = QuadrilateralFilter(left1, left2, right1, right2)
-
 
     i = 0
     for line in fhandle:
