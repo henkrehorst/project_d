@@ -80,3 +80,4 @@ def RunFilter(oldFile, left1x, left1y, right1x, right1y, right2x, right2y, left2
                 tempPoint = Point(x,y)
                 if qFilter.withinQuadrilateral(tempPoint):
                     filteredXyz.write(str(tempPoint.x) + " " + str(tempPoint.y) + " " + str(val) + "\n")
+    return newXyzFile
