@@ -1,4 +1,5 @@
 #!/bin/python3
+import csv
 
 class Point:
     def __init__(self, x, y):
@@ -56,10 +57,12 @@ class QuadrilateralFilter:
 # Here we parse through each line of the original XYZ file, test if its point is in the quadrilateral, and if it does we add it to the new xyz file
 def RunFilter(oldFile, left1x, left1y, right1x, right1y, right2x, right2y, left2x, left2y):
     originalXyzFile = oldFile
-    newXyzFile = "new" + oldFile
+    newXyzFile = "new" + oldFile[:-3] + "csv"
 
     fhandle = open(originalXyzFile, 'r')
     filteredXyz = open(newXyzFile, 'w')
+    filteredXyzWriter = csv.writer(filteredXyz)
+
 
     left1 = Point(left1x, left1y)
     left2 = Point(left2x, left2y)
@@ -79,5 +82,6 @@ def RunFilter(oldFile, left1x, left1y, right1x, right1y, right2x, right2y, left2
             if i % 3 == 0:
                 tempPoint = Point(x,y)
                 if qFilter.withinQuadrilateral(tempPoint):
-                    filteredXyz.write(str(tempPoint.x) + " " + str(tempPoint.y) + " " + str(val) + "\n")
+#                    filteredXyz.write(str(tempPoint.x) + " " + str(tempPoint.y) + " " + str(val) + "\n")
+                    filteredXyzWriter.writerow([str(tempPoint.x), str(tempPoint.y), str(val)])
     return newXyzFile
