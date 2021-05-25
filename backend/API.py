@@ -1,10 +1,16 @@
 from flask import Flask
 from flask_restful import Api, Resource
+from subprocess import Popen
+
 from squareMaker import makeSquare
 from filterCoords import RunFilter
 
 app = Flask(__name__)
 api = Api(app)
+
+class Conversion(Resource):
+    def get(self, filename):
+        Process = Popen('conversion.sh %s' % (filename,), shell=True)
 
 class Algorithm(Resource):
     def get(self,filename,coordinates):
