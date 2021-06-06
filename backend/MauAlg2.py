@@ -13,15 +13,15 @@ sys.setrecursionlimit(10**8)
 xyzFile = open('goeree.xyz','r')
 xyzData = xyzFile.read()
 xyzFile.close()
-
+county = 0
 TwoDArr = filterCoords.RunFilterOutput2DArray(xyzData, "./", 52590.5, 427698.9114832536, 52665.5, 427280.9114832536, 52630.5, 427706.0885167464, 52705.5, 427288.0885167464)
-
-nap = 4
+waitArr = []
+nap = 1
 lengthy = TwoDArr.shape[0]-1
 widthx = TwoDArr.shape[1]-1
 
 class MauAlgorithm:
-
+    global county
     def checkNode(self, y, x, nap):
         if float(TwoDArr[y,x].height) < nap :
                 return(self.pathFinder(y,x,nap))
@@ -29,28 +29,40 @@ class MauAlgorithm:
             print("Path is above NAP, therefore safe")
 
     def pathFinder(self,y,x,nap):
+        global county
+        global waitArr
+        print(county)
+        county+=1
         TwoDArr[y,x].RGB = "#FFB6C1"
-        print(str(TwoDArr[y,x].height) +" "+ str(TwoDArr[y,x].RGB) +" "+ str(TwoDArr[y,x].x) +" "+ str(TwoDArr[y,x].y))
             
         if y>0 and TwoDArr[y-1,x].RGB != "#FFB6C1" and float(TwoDArr[y-1,x].height) < nap:
-                return self.pathFinder(y-1,x,nap)
+            waitArr.append(TwoDArr[y-1,x])
+            # return self.pathFinder(y-1,x,nap)
+
         if y<lengthy and TwoDArr[y+1,x].RGB != "#FFB6C1" and float(TwoDArr[y+1,x].height) < nap:
-                return self.pathFinder(y+1,x,nap)
+            waitArr.append(TwoDArr[y+1,x])
+            # return self.pathFinder(y+1,x,nap)
 
         if x>0 and TwoDArr[y,x-1].RGB != "#FFB6C1" and float(TwoDArr[y,x-1].height) < nap:
-            return self.pathFinder(y,x-1,nap)
+            waitArr.append(TwoDArr[y,x-1])
+            # return self.pathFinder(y,x-1,nap)
         if x<widthx and TwoDArr[y,x+1].RGB != "#FFB6C1" and float(TwoDArr[y,x+1].height) < nap:
-            return self.pathFinder(y,x+1,nap)
+            waitArr.append(TwoDArr[y,x+1])
+            # return self.pathFinder(y,x+1,nap)
 
         if y>0 and x>0 and TwoDArr[y-1,x-1].RGB != "#FFB6C1" and float(TwoDArr[y-1,x-1].height) < nap:
-            return self.pathFinder(y-1,x-1,nap)
+            waitArr.append(TwoDArr[y-1,x-1])
+            # return self.pathFinder(y-1,x-1,nap)
         if y<lengthy and x<widthx and TwoDArr[y+1,x+1].RGB != "#FFB6C1" and float(TwoDArr[y+1,x+1].height) < nap:
-            return self.pathFinder(y+1,x+1,nap)
+            waitArr.append(TwoDArr[y+1,x+1])
+            # return self.pathFinder(y+1,x+1,nap)
 
         if y>0 and x<widthx and TwoDArr[y-1,x+1].RGB != "#FFB6C1" and float(TwoDArr[y-1,x+1].height) < nap:
-            return self.pathFinder(y-1,x+1,nap)
+            waitArr.append(TwoDArr[y-1,x+1])
+            # return self.pathFinder(y-1,x+1,nap)
         if y<lengthy and x>0 and TwoDArr[y+1,x-1].RGB != "#FFB6C1" and float(TwoDArr[y+1,x-1].height) < nap:
-            return self.pathFinder(y+1,x-1,nap)
+            waitArr.append(TwoDArr[y+1,x-1])
+            # return self.pathFinder(y+1,x-1,nap)
 
 # class GetLine:
 #     def getLine(self,lengthy,widthx):
@@ -135,12 +147,17 @@ class MapCreator:
 # startline = dothing.getLine(114,424)
 
 find = MauAlgorithm()
-nap=4
+nap=0
 count=0
 for _ in range(0,widthx+1):
     find.checkNode(0,count,nap)
     count+=1
 
+
+while len(waitArr) > 0:
+    find.pathFinder(waitArr[0].x, waitArr[0].y, nap)
+    del waitArr[0]
+    print(str(waitArr[0].x) +" "+ str(waitArr[0].y))
 
 # print(TwoDArr[lengthy-1,0].x)
 # TwoDArr2 = asarray(TwoDArr)
