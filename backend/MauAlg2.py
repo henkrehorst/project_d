@@ -83,7 +83,7 @@ class MauAlgorithm:
 #         return pointArray
 
 class MapCreator:
-    def drawPath(self,start):
+    def drawPath(self):
         array = np.zeros([widthx+1, lengthy+1, 4], dtype=np.uint8)
         array[:,:] = [248, 213, 104, 0] #Sandy backside
         
@@ -91,11 +91,11 @@ class MapCreator:
         y=0
         for _ in range(0,widthx+1):
             for _ in range(0,lengthy+1):
-                if nap - TwoDArr[y,x].height > 2 and TwoDArr[y,x].RGB=="#FFB6C1":
+                if nap - float(TwoDArr[y,x].height) > 2 and TwoDArr[y,x].RGB=="#FFB6C1":
                     TwoDArr[y,x].RGB="#FF0000"
-                elif nap - TwoDArr[y,x].height > 1 and TwoDArr[y,x].RGB=="#FFB6C1":
+                elif nap - float(TwoDArr[y,x].height) > 1 and TwoDArr[y,x].RGB=="#FFB6C1":
                     TwoDArr[y,x].RGB="#FFA500"
-                elif nap - TwoDArr[y,x].height > 0 and TwoDArr[y,x].RGB=="#FFB6C1":
+                elif nap - float(TwoDArr[y,x].height) > 0 and TwoDArr[y,x].RGB=="#FFB6C1":
                     TwoDArr[y,x].RGB="#FFFF00"
                 y+=1
             x+=1
@@ -161,7 +161,7 @@ while len(waitArr) > 0:
 
 #Dit is om het pad te tekenen
 draw = MapCreator()
-draw.drawPath(start)
+draw.drawPath()
 
 # print(TwoDArr[lengthy-1,0].x)
 # TwoDArr2 = asarray(TwoDArr)
