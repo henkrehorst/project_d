@@ -89,8 +89,8 @@ class MapCreator:
         
         x=0
         y=0
-        for _ in range(0,widthx+1):
-            for _ in range(0,lengthy+1):
+        for _ in range(0,widthx):
+            for _ in range(0,lengthy):
                 if nap - float(TwoDArr[y,x].height) > 2 and TwoDArr[y,x].RGB=="#FFB6C1":
                     TwoDArr[y,x].RGB="#FF0000"
                 elif nap - float(TwoDArr[y,x].height) > 1 and TwoDArr[y,x].RGB=="#FFB6C1":
@@ -101,8 +101,8 @@ class MapCreator:
             x+=1
         x=0
         y=0
-        for _ in range(0,widthx+1):
-            for _ in range(0,lengthy+1):
+        for _ in range(0,widthx):
+            for _ in range(0,lengthy):
                 if TwoDArr[y,x].RGB == "#FF0000":
                     array[TwoDArr[y,x].x,TwoDArr[y,x].y] = [255, 0, 0,100] #red area
                 if TwoDArr[y,x].RGB == "#FFA500":
@@ -156,8 +156,8 @@ while len(waitArr) > 0:
 
     if waitArr[0].RGB != "#FFB6C1":
         find.pathFinder(waitArr[0].x, waitArr[0].y, nap)
-    del waitArr[0]
     print(str(waitArr[0].x) +" "+ str(waitArr[0].y))
+    del waitArr[0]
 
 #Dit is om het pad te tekenen
 draw = MapCreator()
