@@ -105,18 +105,18 @@ class MapCreator:
         array = np.zeros([501, 501, 3], dtype=np.uint8)
         array[:,:] = [248, 213, 104] #Sandy backside
         
-        # count=0
-        # for _ in obj:
-        #     if obj[count]["RGB"] == "#0000FF":
-        #         array[obj[count]["X"],obj[count]["Y"]] = [55, 102, 246] #blue line
-        #     count+=1
-        # startpar=0
-        # for _ in range(0,start):
-        #     array[obj[startpar]["X"],obj[startpar]["Y"]] = [255, 97, 71] #red starting point
-        #     startpar+=1
-        # for _ in range(start,secondhalf):
-        #     array[obj[startpar]["X"],obj[startpar]["Y"]] = [255, 97, 71] #red starting point
-        #     startpar+=1
+        count=0
+        for _ in obj:
+            if obj[count]["RGB"] == "#0000FF":
+                array[obj[count]["X"],obj[count]["Y"]] = [55, 102, 246] #blue line
+            count+=1
+        startpar=0
+        for _ in range(0,start):
+            array[obj[startpar]["X"],obj[startpar]["Y"]] = [255, 97, 71] #red starting point
+            startpar+=1
+        for _ in range(start,secondhalf):
+            array[obj[startpar]["X"],obj[startpar]["Y"]] = [255, 97, 71] #red starting point
+            startpar+=1
         img = Image.fromarray(array)
         img.save('testrgb.png')
 

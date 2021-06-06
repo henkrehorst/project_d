@@ -72,51 +72,51 @@ class MAlgorithm:
             sys.exit()
         if obj[snode]['X']>1:
             if obj[snode-1]['Z'] <= nap and obj[snode-1]['RGB']!="#0000FF":
-                self.pathFinder(snode-1,nap,counts)
+                waitArr.append(obj[snode-1])
             if obj[snode]['Y']<int(math.sqrt(len(obj))):
                 if obj[snode+int(math.sqrt(len(obj)))-1]['Z'] <= nap and obj[snode+int(math.sqrt(len(obj)))-1]['RGB']!="#0000FF":
-                    self.pathFinder(snode+int(math.sqrt(len(obj)))-1,nap,counts)
+                    waitArr.append(obj[snode+int(math.sqrt(len(obj)))-1])
             if obj[snode]['Y']>1:
                 if obj[snode-int(math.sqrt(len(obj)))-1]['Z'] <= nap and obj[snode-int(math.sqrt(len(obj)))-1]['RGB']!="#0000FF":
-                    self.pathFinder(snode-int(math.sqrt(len(obj)))-1,nap,counts)
+                    waitArr.append(obj[snode-int(math.sqrt(len(obj)))-1])
                 
 
         if obj[snode]['X']<int(math.sqrt(len(obj))):
             if obj[snode+1]['Z'] <= nap and obj[snode+1]['RGB']!="#0000FF":
-                self.pathFinder(snode+1,nap,counts)
+                waitArr.append(obj[snode+1])
             if obj[snode]['Y']<int(math.sqrt(len(obj))):   
                 if obj[snode+int(math.sqrt(len(obj)))+1]['Z'] <= nap and obj[snode+int(math.sqrt(len(obj)))+1]['RGB']!="#0000FF":
-                    self.pathFinder(snode+int(math.sqrt(len(obj)))+1,nap,counts)
+                    waitArr.append(obj[snode+int(math.sqrt(len(obj)))+1])
             if obj[snode]['Y']>1:
                 if obj[snode-int(math.sqrt(len(obj)))+1]['Z'] <= nap and obj[snode-int(math.sqrt(len(obj)))+1]['RGB']!="#0000FF":
-                    self.pathFinder(snode-int(math.sqrt(len(obj)))+1,nap,counts)
+                    waitArr.append(obj[snode-int(math.sqrt(len(obj)))+1])
 
 
         if obj[snode]['Y']<int(math.sqrt(len(obj))):
             if obj[snode+int(math.sqrt(len(obj)))]['Z'] <= nap and obj[snode+int(math.sqrt(len(obj)))]['RGB']!="#0000FF":
-                self.pathFinder(snode+int(math.sqrt(len(obj))),nap,counts)
+                waitArr.append(obj[snode+int(math.sqrt(len(obj)))])
         
         if obj[snode]['Y']>1:
             if obj[snode-int(math.sqrt(len(obj)))]['Z'] <= nap and obj[snode-int(math.sqrt(len(obj)))]['RGB']!="#0000FF":
-                self.pathFinder(snode-int(math.sqrt(len(obj))),nap,counts)
+                waitArr.append(obj[snode-int(math.sqrt(len(obj)))])
         
 class MapCreator:
     def drawPath(self,start):
         array = np.zeros([501, 501, 3], dtype=np.uint8)
         array[:,:] = [248, 213, 104] #Sandy backside
         
-        # count=0
-        # for _ in obj:
-        #     if obj[count]["RGB"] == "#0000FF":
-        #         array[obj[count]["X"],obj[count]["Y"]] = [55, 102, 246] #blue line
-        #     count+=1
-        # startpar=0
-        # for _ in range(0,start):
-        #     array[obj[startpar]["X"],obj[startpar]["Y"]] = [255, 97, 71] #red starting point
-        #     startpar+=1
-        # for _ in range(start,secondhalf):
-        #     array[obj[startpar]["X"],obj[startpar]["Y"]] = [255, 97, 71] #red starting point
-        #     startpar+=1
+        count=0
+        for _ in obj:
+            if obj[count]["RGB"] == "#0000FF":
+                array[obj[count]["X"],obj[count]["Y"]] = [55, 102, 246] #blue line
+            count+=1
+        startpar=0
+        for _ in range(0,start):
+            array[obj[startpar]["X"],obj[startpar]["Y"]] = [255, 97, 71] #red starting point
+            startpar+=1
+        for _ in range(start,secondhalf):
+            array[obj[startpar]["X"],obj[startpar]["Y"]] = [255, 97, 71] #red starting point
+            startpar+=1
         img = Image.fromarray(array)
         img.save('testrgb.png')
 
@@ -141,10 +141,11 @@ for _ in range(start,secondhalf):
     startpar+=1
 
 while len(waitArr) > 0:
-    find.pathFinder(waitArr[0].x, waitArr[0].y, nap)
+    find.pathFinder(waitArr[0]['X'], waitArr[0]['Y'], nap)
     del waitArr[0]
-    print(str(waitArr[0].x) +" "+ str(waitArr[0].y))
+    print(str(waitArr[0]['X']) + " " + str(waitArr[0]['Y']))
 
 #Dit is om het pad te tekenen
-draw = MapCreator()
-draw.drawPath(start)
+# draw = MapCreator()
+# draw.drawPath(start)
+

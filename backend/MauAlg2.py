@@ -32,6 +32,7 @@ class MauAlgorithm:
         global county
         global waitArr
         print(county)
+        print(TwoDArr[y,x].RGB)
         county+=1
         TwoDArr[y,x].RGB = "#FFB6C1"
             
@@ -155,7 +156,9 @@ for _ in range(0,widthx+1):
 
 
 while len(waitArr) > 0:
-    find.pathFinder(waitArr[0].x, waitArr[0].y, nap)
+
+    if waitArr[0].RGB != "#FFB6C1":
+        find.pathFinder(waitArr[0].x, waitArr[0].y, nap)
     del waitArr[0]
     print(str(waitArr[0].x) +" "+ str(waitArr[0].y))
 
