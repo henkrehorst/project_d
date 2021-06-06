@@ -59,8 +59,47 @@ class MAlgorithm:
         else: 
             print("Path is above NAP, therefore safe")
 
- 
     def pathFinder(self, snode,nap,counts):
+        global checky
+        obj[snode]['RGB']="#0000FF"
+        counts+=1
+        checky+=1 #Kanstraksweg
+        print(obj[snode]['NAME'])
+        if counts > 10000:
+            print("WARNING!!! THIS AREA WILL BE FLOODED!")
+            print(checky) #Kanstraksweg
+            sys.exit()
+        if obj[snode]['X']>1:
+            if obj[snode-1]['Z'] <= nap and obj[snode-1]['RGB']!="#0000FF":
+                self.asdasd(snode-1,nap,counts)
+            if obj[snode]['Y']<int(math.sqrt(len(obj))):
+                if obj[snode+int(math.sqrt(len(obj)))-1]['Z'] <= nap and obj[snode+int(math.sqrt(len(obj)))-1]['RGB']!="#0000FF":
+                    self.asdasd(snode+int(math.sqrt(len(obj)))-1,nap,counts)
+            if obj[snode]['Y']>1:
+                if obj[snode-int(math.sqrt(len(obj)))-1]['Z'] <= nap and obj[snode-int(math.sqrt(len(obj)))-1]['RGB']!="#0000FF":
+                    self.asdasd(snode-int(math.sqrt(len(obj)))-1,nap,counts)
+                
+
+        if obj[snode]['X']<int(math.sqrt(len(obj))):
+            if obj[snode+1]['Z'] <= nap and obj[snode+1]['RGB']!="#0000FF":
+                self.asdasd(snode+1,nap,counts)
+            if obj[snode]['Y']<int(math.sqrt(len(obj))):   
+                if obj[snode+int(math.sqrt(len(obj)))+1]['Z'] <= nap and obj[snode+int(math.sqrt(len(obj)))+1]['RGB']!="#0000FF":
+                    self.asdasd(snode+int(math.sqrt(len(obj)))+1,nap,counts)
+            if obj[snode]['Y']>1:
+                if obj[snode-int(math.sqrt(len(obj)))+1]['Z'] <= nap and obj[snode-int(math.sqrt(len(obj)))+1]['RGB']!="#0000FF":
+                    self.asdasd(snode-int(math.sqrt(len(obj)))+1,nap,counts)
+
+
+        if obj[snode]['Y']<int(math.sqrt(len(obj))):
+            if obj[snode+int(math.sqrt(len(obj)))]['Z'] <= nap and obj[snode+int(math.sqrt(len(obj)))]['RGB']!="#0000FF":
+                self.asdasd(snode+int(math.sqrt(len(obj))),nap,counts)
+        
+        if obj[snode]['Y']>1:
+            if obj[snode-int(math.sqrt(len(obj)))]['Z'] <= nap and obj[snode-int(math.sqrt(len(obj)))]['RGB']!="#0000FF":
+                self.asdasd(snode-int(math.sqrt(len(obj))),nap,counts)
+ 
+    def asdasd(self, snode,nap,counts):
         global checky
         obj[snode]['RGB']="#0000FF"
         counts+=1

@@ -141,11 +141,12 @@ for _ in range(start,secondhalf):
     startpar+=1
 
 while len(waitArr) > 0:
-    find.pathFinder(waitArr[0]['X'], waitArr[0]['Y'], nap)
-    del waitArr[0]
+    if waitArr[0]['RGB'] != "#FFB6C1":
+        find.pathFinder(waitArr[0]['X'], waitArr[0]['Y'], nap)
     print(str(waitArr[0]['X']) + " " + str(waitArr[0]['Y']))
+    del waitArr[0]
 
 #Dit is om het pad te tekenen
-# draw = MapCreator()
-# draw.drawPath(start)
+draw = MapCreator()
+draw.drawPath(start)
 
