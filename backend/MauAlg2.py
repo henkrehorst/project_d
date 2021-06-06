@@ -87,34 +87,34 @@ class MapCreator:
         array = np.zeros([widthx+1, lengthy+1, 4], dtype=np.uint8)
         array[:,:] = [248, 213, 104, 0] #Sandy backside
         
-        x=0
-        y=0
-        for _ in range(0,widthx):
-            for _ in range(0,lengthy):
+        #x=0
+        #y=0
+        for x in range(0,widthx):
+            for y in range(0,lengthy):
                 if nap - float(TwoDArr[y,x].height) > 2 and TwoDArr[y,x].RGB=="#FFB6C1":
                     TwoDArr[y,x].RGB="#FF0000"
                 elif nap - float(TwoDArr[y,x].height) > 1 and TwoDArr[y,x].RGB=="#FFB6C1":
                     TwoDArr[y,x].RGB="#FFA500"
                 elif nap - float(TwoDArr[y,x].height) > 0 and TwoDArr[y,x].RGB=="#FFB6C1":
                     TwoDArr[y,x].RGB="#FFFF00"
-                y+=1
-            x+=1
-        x=0
-        y=0
-        for _ in range(0,widthx):
-            for _ in range(0,lengthy):
+                #y+=1
+            #x+=1
+        #x=0
+        #y=0
+        for x in range(0,widthx):
+            for y in range(0,lengthy):
                 if TwoDArr[y,x].RGB == "#FF0000":
-                    array[TwoDArr[y,x].x,TwoDArr[y,x].y] = [255, 0, 0,100] #red area
+                    array[x,y] = [255, 0, 0,100] #red area
                 if TwoDArr[y,x].RGB == "#FFA500":
-                    array[TwoDArr[y,x].x,TwoDArr[y,x].y] = [255, 165, 0,100] #orange area
+                    array[x,y] = [255, 165, 0,100] #orange area
                 if TwoDArr[y,x].RGB == "#FFFF00":
-                    array[TwoDArr[y,x].x,TwoDArr[y,x].y] = [255, 255, 0,100] #yellow area
+                    array[x,y] = [255, 255, 0,100] #yellow area
                 if TwoDArr[y,x].RGB == "#39ff14":
-                    array[TwoDArr[y,x].x,TwoDArr[y,x].y] = [57, 255, 20,100] #yellow area
-                y+=1
-            x+=1
+                    array[x,y] = [57, 255, 20,100] #yellow area
+                #y+=1
+            #x+=1
 
-        x=0
+        #x=0
         img = Image.fromarray(array)
         img.save('testrgb.png')
 
