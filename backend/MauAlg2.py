@@ -114,12 +114,9 @@ class MapCreator:
                 y+=1
             x+=1
 
-        # x=0
-        # for _ in range(0,widthx+1):
-        #     array[lengthy,x] = [255, 97, 71,100] #red starting point
-        #     x+=1
-        # img = Image.fromarray(array)
-        # img.save('testrgb.png')
+        x=0
+        img = Image.fromarray(array)
+        img.save('testrgb.png')
 
 
 
@@ -161,6 +158,10 @@ while len(waitArr) > 0:
         find.pathFinder(waitArr[0].x, waitArr[0].y, nap)
     del waitArr[0]
     print(str(waitArr[0].x) +" "+ str(waitArr[0].y))
+
+#Dit is om het pad te tekenen
+draw = MapCreator()
+draw.drawPath(start)
 
 # print(TwoDArr[lengthy-1,0].x)
 # TwoDArr2 = asarray(TwoDArr)
