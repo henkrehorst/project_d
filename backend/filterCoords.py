@@ -32,7 +32,6 @@ class Edge:
 		else:
 			yDiff = self.p2.y - self.p1.y
 		edgeLength = math.sqrt(xDiff**2 + yDiff**2)
-		print("Edge length: " + str(math.ceil(edgeLength)))
 		return edgeLength
 
 
@@ -40,13 +39,6 @@ class Edge:
 	def GetYForX(self, x):
 		diffX = x - self.p1.x
 		moveY = diffX * self.CalculateSlope()
-		print()
-		print(self.p1.x)
-		print(x)
-		print("difference X: " + str(diffX) + " = " + str(x)+ " - " + str(self.p1.x))
-		print("Move Y: " + str(moveY) + " = "+ str(diffX) + " * " + str(self.slope))
-		print("Y value for X: " + str(self.p1.y+moveY))
-		print()
 		return self.p1.y + moveY
 
 	def GetXForY(self, y):
@@ -59,12 +51,24 @@ class Edge:
 	# ONLY WORKS FROM THE BOTTOM EDGE
 	# GIVE LEFT EDGE AS INPUT
 	def IntersectionPoint(self, point, edge):
-		# return Point(0, intersectionPointY)
 		xModifier = point.x - edge.p1.x  
 		xValue = xModifier * (1 + abs(self.slope))
+		xValue += self.p1.x
 		yValue = self.GetYForX(xValue)
-		print(xValue, yValue)
 		return (xValue, yValue)
+
+	# def CalculateOffset(self, coords):
+	# 	tempPoint = point(coords)
+	# 	if point.x > self.p1.x:
+	# 		length = point.x-self.p1.x
+	# 	else:
+	# 		length = self.p1.x - point.x
+
+	# 	if point.y > self.p1.y:
+	# 		height = point.y-self.p1.y
+	# 	else:
+	# 		height = self.p1.y - point.y
+
 
 
 
@@ -99,7 +103,6 @@ class QuadrilateralFilter:
 		if self.rightEdge.GetXForY(p.y) < p.x:
 			# print(self.rightEdge.GetXForY(p.y), p.x)
 			return False
-		print('true')
 		return True
 
 	# returns minimum and maximum x and y values
@@ -127,10 +130,33 @@ class QuadrilateralFilter:
 		return [rightXValue, leftXValue, topYValue, botYValue]
 
 class TwoDimensionalXYZArrayStraight:
-	def __init__(self, QFilter):
+	def __init__(self, QFilter, xyzFile):
 		self.QFilter = QFilter
 		self.arr = self.createArray()
-		#self.fillArray(xyzFile)
+		self.fillArray(xyzFile)
+
+	# Calculate the offset of the right corner
+	# Using pythagoras
+	def calculateOffsets(self, point):
+		# Calculate the height value of the right corner
+		if point.y > self.QFilter.left2.y:
+			height = point.y - self.QFilter.left2.y
+		else:
+			height = self.QFilter.left2.y - self.point.y
+
+		# Calculate the width value
+		if point.x > self.QFilter.left1.x:
+			width = point.x - self.QFilter.left1.x
+		else:
+			width = self.QFilter.left1.x - point.x
+
+		# Calculate the X Offset using pythagoras
+		XOffset = (math.sqrt(height**2+width**2)) - width
+
+		return (XOffset, height)
+
+
+
 
 	# Creates an empty numpy 2D array with the length and width of the edges	
 	def createArray(self):
@@ -145,7 +171,7 @@ class TwoDimensionalXYZArrayStraight:
 	def fillArray(self, xyzFile):
 		# calculate length from given point in pointlist to its edge
 		offsetX = self.QFilter.left2.x
-		offsetY = self.QFilter.left2.y
+		offsetY = self.QFilter.right2.y
 		print("OffsetX: ", str(offsetX))
 		print("OffsetY: ", str(offsetY))
 		xyzFileHandle = open(xyzFile, 'r')
@@ -161,12 +187,14 @@ class TwoDimensionalXYZArrayStraight:
 				if i % 3 == 0:
 					point = Point(x,y,val)
 					if self.QFilter.withinQuadrilateral(point):
-						print("passed test")
+						print("x,y:", x, y)
+						offsets = self.calculateOffsets(point)
 						coords = self.QFilter.bottomEdge.IntersectionPoint(point, self.QFilter.leftEdge)
-						if self.arr[int(round(coords[0])-offsetX), int(round(coords[1])-offsetY)] != None:
+						print(coords, offsetX, offsetY)
+						if self.arr[int(round(coords[0])-offsets[0]), int(round(coords[1])-offsets[1])] != None:
 							input("collision found")
-						self.arr[int(round(coords[0])-offsetX), int(round(coords[1])-offsetY)] = point.height
-						print(point.height)
+						self.arr[int(round(coords[0])-offset[0]), int(round(coords[1])-offsets[1])] = point.height
+						#print(point.height)
 		print("Filled array succesfully")
 		print("Writing text file..")
 		numpy.savetxt("arr.csv", self.arr, delimiter=",")
