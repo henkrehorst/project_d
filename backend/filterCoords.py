@@ -159,7 +159,7 @@ class TwoDimensionalXYZArrayStraight:
 
 
 		YOffset = (math.sqrt(height**2+width**2)) - height
-		print(height, width, YOffset)
+		#print(height, width, YOffset)
 
 
 		return (XOffset, YOffset)
@@ -179,15 +179,12 @@ class TwoDimensionalXYZArrayStraight:
 	# Fills the array with the values inside of the .xyz file
 	def fillArray(self, xyzFile):
 		# calculate length from given point in pointlist to its edge
-		offsetX = self.QFilter.left2.x
-		offsetY = self.QFilter.left2.y
-		print("OffsetX: ", str(offsetX))
-		print("OffsetY: ", str(offsetY))
 		xyzFileHandle = open(xyzFile, 'r')
 		# Implement xyzFile class here
 		i = 0
 		points = 0
 		colisions = 0
+		print("Parsing through XYZ file...")
 		for line in xyzFileHandle:
 			for val in line.strip().split(" "):
 				i+= 1
@@ -200,16 +197,16 @@ class TwoDimensionalXYZArrayStraight:
 					if self.QFilter.withinQuadrilateral(point):
 						points += 1
 						realCoords = self.calculateOffsetFromPoint(point)
-						#coords = self.QFilter.bottomEdge.IntersectionPoint(point, self.QFilter.leftEdge)
 
-						#print(realCoords, offsetX, offsetY)
-						if self.arr[int(round(realCoords[0]-1)), int(round(realCoords[1]-1))] != 2.4414129179362297e-152:
-							#print("collision found: ", colisions)
-							colisions += 1
-						else:
-							print("not None")
+						# if bool(self.arr[int(round(realCoords[0]-1)), int(round(realCoords[1]-1))]) != False:
+						# 	colisions += 1
+						# 	print("COLLISION!")
+						# 	print(self.arr[int(round(realCoords[0]-1)), int(round(realCoords[1]-1))], bool(self.arr[int(round(realCoords[0]-1)), int(round(realCoords[1]-1))]))	
+						# else:
+						# 	print("NO COLLISION")
+						# 	print(self.arr[int(round(realCoords[0]-1)), int(round(realCoords[1]-1))], bool(self.arr[int(round(realCoords[0]-1)), int(round(realCoords[1]-1))]))	
+
 						self.arr[int(round(realCoords[0]-1)), int(round(realCoords[1]-1))] = point.height
-						#print(point.height)
 		print("Filled array succesfully")
 		print("Writing text file..")
 		numpy.savetxt("arr.csv", self.arr, delimiter=",")
@@ -235,5 +232,5 @@ class XYZFileHandler:
 					height = val
 					tempPoint = Point(x, y, height)
 					pointList.append(tempPoint)
-		print(pointList[0].x, pointList[0].y)
+		#print(pointList[0].x, pointList[0].y)
 		return pointList
