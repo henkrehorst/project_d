@@ -32,6 +32,8 @@ class Edge:
 		else:
 			yDiff = self.p2.y - self.p1.y
 		edgeLength = math.sqrt(xDiff**2 + yDiff**2)
+		print(edgeLength)
+		input()
 		return edgeLength
 
 
@@ -88,20 +90,13 @@ class QuadrilateralFilter:
 
 	# Takes point as input, returns True if it appears in this rectangle
 	def withinQuadrilateral(self, p):
-		# check = False
 		if self.topEdge.GetYForX(p.x) < p.y:
-			# if check:
-			# 	print(self.topEdge.GetYForX(p.x), p.y)
 			return False
 		if self.bottomEdge.GetYForX(p.x) > p.y:
-			# if check:
-			# 	print(self.bottomEdge.GetYForX(p.x), p.y)
 			return False
 		if self.leftEdge.GetXForY(p.y) > p.x:
-			# print(self.leftEdge.GetXForY(p.y), p.x)
 			return False
 		if self.rightEdge.GetXForY(p.y) < p.x:
-			# print(self.rightEdge.GetXForY(p.y), p.x)
 			return False
 		return True
 
@@ -137,18 +132,20 @@ class TwoDimensionalXYZArrayStraight:
 
 	# Calculate the offset of the right corner
 	# Using pythagoras
-	def calculateOffsets(self, point):
+	def calculateRealPoint(self, point):
 		# Calculate the height value of the right corner
 		if point.y > self.QFilter.left2.y:
 			height = point.y - self.QFilter.left2.y
 		else:
-			height = self.QFilter.left2.y - self.point.y
+			height = self.QFilter.left2.y - point.y
 
 		# Calculate the width value
 		if point.x > self.QFilter.left1.x:
 			width = point.x - self.QFilter.left1.x
 		else:
 			width = self.QFilter.left1.x - point.x
+
+
 
 		# Calculate the X Offset using pythagoras
 		XOffset = (math.sqrt(height**2+width**2)) - width
@@ -171,12 +168,13 @@ class TwoDimensionalXYZArrayStraight:
 	def fillArray(self, xyzFile):
 		# calculate length from given point in pointlist to its edge
 		offsetX = self.QFilter.left2.x
-		offsetY = self.QFilter.right2.y
+		offsetY = self.QFilter.left2.y
 		print("OffsetX: ", str(offsetX))
 		print("OffsetY: ", str(offsetY))
 		xyzFileHandle = open(xyzFile, 'r')
 		# Implement xyzFile class here
 		i = 0
+		colisions = 0
 		for line in xyzFileHandle:
 			for val in line.strip().split(" "):
 				i+= 1
@@ -187,13 +185,14 @@ class TwoDimensionalXYZArrayStraight:
 				if i % 3 == 0:
 					point = Point(x,y,val)
 					if self.QFilter.withinQuadrilateral(point):
-						print("x,y:", x, y)
-						offsets = self.calculateOffsets(point)
-						coords = self.QFilter.bottomEdge.IntersectionPoint(point, self.QFilter.leftEdge)
-						print(coords, offsetX, offsetY)
-						if self.arr[int(round(coords[0])-offsets[0]), int(round(coords[1])-offsets[1])] != None:
-							input("collision found")
-						self.arr[int(round(coords[0])-offset[0]), int(round(coords[1])-offsets[1])] = point.height
+						realCoords = self.calculateRealPoint(point)
+						#coords = self.QFilter.bottomEdge.IntersectionPoint(point, self.QFilter.leftEdge)
+
+						print(realCoords, offsetX, offsetY)
+						if self.arr[int(round(realCoords[0]-1)), int(round(realCoords[1]-1))] != None:
+							print("collision found: ", colisions)
+							colisions += 1
+						self.arr[int(round(realCoords[0]-1)), int(round(realCoords[1]-1))] = point.height
 						#print(point.height)
 		print("Filled array succesfully")
 		print("Writing text file..")
