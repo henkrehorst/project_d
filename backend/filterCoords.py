@@ -32,8 +32,6 @@ class Edge:
 		else:
 			yDiff = self.p2.y - self.p1.y
 		edgeLength = math.sqrt(xDiff**2 + yDiff**2)
-		print(edgeLength)
-		input()
 		return edgeLength
 
 
@@ -132,12 +130,26 @@ class TwoDimensionalXYZArrayStraight:
 
 	# Calculate the offset of the right corner
 	# Using pythagoras
-	def calculateRealPoint(self, point):
+	def calculateOffsetFromPoint(self, point):
 		# Calculate the height value of the right corner
 		if point.y > self.QFilter.left2.y:
 			height = point.y - self.QFilter.left2.y
 		else:
 			height = self.QFilter.left2.y - point.y
+
+		# Calculate the width value
+		if point.x > self.QFilter.left2.x:
+			width = point.x - self.QFilter.left2.x
+		else:
+			width = self.QFilter.left2.x - point.x
+
+		# Calculate the X Offset using pythagoras
+		XOffset = (math.sqrt(height**2+width**2)) - width
+
+		if point.y > self.QFilter.left1.y:
+			height = point.y - self.QFilter.left1.y
+		else:
+			height = self.QFilter.left1.y - point.y
 
 		# Calculate the width value
 		if point.x > self.QFilter.left1.x:
@@ -146,11 +158,11 @@ class TwoDimensionalXYZArrayStraight:
 			width = self.QFilter.left1.x - point.x
 
 
+		YOffset = (math.sqrt(height**2+width**2)) - height
+		print(height, width, YOffset)
 
-		# Calculate the X Offset using pythagoras
-		XOffset = (math.sqrt(height**2+width**2)) - width
 
-		return (XOffset, height)
+		return (XOffset, YOffset)
 
 
 
@@ -174,6 +186,7 @@ class TwoDimensionalXYZArrayStraight:
 		xyzFileHandle = open(xyzFile, 'r')
 		# Implement xyzFile class here
 		i = 0
+		points = 0
 		colisions = 0
 		for line in xyzFileHandle:
 			for val in line.strip().split(" "):
@@ -185,18 +198,23 @@ class TwoDimensionalXYZArrayStraight:
 				if i % 3 == 0:
 					point = Point(x,y,val)
 					if self.QFilter.withinQuadrilateral(point):
-						realCoords = self.calculateRealPoint(point)
+						points += 1
+						realCoords = self.calculateOffsetFromPoint(point)
 						#coords = self.QFilter.bottomEdge.IntersectionPoint(point, self.QFilter.leftEdge)
 
-						print(realCoords, offsetX, offsetY)
-						if self.arr[int(round(realCoords[0]-1)), int(round(realCoords[1]-1))] != None:
-							print("collision found: ", colisions)
+						#print(realCoords, offsetX, offsetY)
+						if self.arr[int(round(realCoords[0]-1)), int(round(realCoords[1]-1))] != 2.4414129179362297e-152:
+							#print("collision found: ", colisions)
 							colisions += 1
+						else:
+							print("not None")
 						self.arr[int(round(realCoords[0]-1)), int(round(realCoords[1]-1))] = point.height
 						#print(point.height)
 		print("Filled array succesfully")
 		print("Writing text file..")
 		numpy.savetxt("arr.csv", self.arr, delimiter=",")
+		print("Written with", colisions, "collisions and ", points, "points")
+
 
 
 class XYZFileHandler:
