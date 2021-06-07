@@ -137,7 +137,7 @@ class MAlgorithm:
         
 class MapCreator:
     def drawPath(self,start):
-        array = np.zeros([501, 501, 3], dtype=np.uint8)
+        array = np.zeros([widthx, lengthy, 3], dtype=np.uint8)
         array[:,:] = [248, 213, 104] #Sandy backside
         
         count=0

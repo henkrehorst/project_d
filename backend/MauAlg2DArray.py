@@ -21,6 +21,7 @@ nap = 1
 lengthy = TwoDArr.shape[0]-1
 widthx = TwoDArr.shape[1]-1
 
+
 class MauAlgorithm:
     global county
     def checkNode(self, y, x, nap):
@@ -111,7 +112,7 @@ class MapCreator:
                 if TwoDArr[y,x].RGB == "#FFFF00":
                     array[x,y] = [255, 255, 0,100] #yellow area
                 if TwoDArr[y,x].RGB == "#39ff14":
-                    array[x,y] = [57, 255, 20,100] #yellow area
+                    array[x,y] = [57, 255, 20,100] #green? area
                 #y+=1
             #x+=1
 

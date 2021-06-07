@@ -167,7 +167,7 @@ class MapCreator:
 # Dit is om het algoritme uit te voeren
 start=55
 secondhalf=int(math.sqrt(len(obj)))
-nap=4
+nap=30
 
 find = MAlgorithm()
 
