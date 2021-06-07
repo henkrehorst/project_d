@@ -194,12 +194,13 @@ class TwoDimensionalXYZArrayStraight:
 					y = float(val)
 				if i % 3 == 0:
 					point = Point(x,y,val)
+					print(point.x, point.y, point.height)
 					if self.QFilter.withinQuadrilateral(point):
 						points += 1
 						realCoords = self.calculateOffsetFromPoint(point)
 
-						# if bool(self.arr[int(round(realCoords[0]-1)), int(round(realCoords[1]-1))]) != False:
-						# 	colisions += 1
+						if bool(self.arr[int(round(realCoords[0]-1)), int(round(realCoords[1]-1))]) != False:
+						 	colisions += 1
 						# 	print("COLLISION!")
 						# 	print(self.arr[int(round(realCoords[0]-1)), int(round(realCoords[1]-1))], bool(self.arr[int(round(realCoords[0]-1)), int(round(realCoords[1]-1))]))	
 						# else:

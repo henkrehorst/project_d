@@ -1,9 +1,9 @@
 import filterCoords as fc
 
-l1 = fc.Point(52590.5, 427698.9114832536)
-l2 = fc.Point(52630.5, 427706.0885167464)
-r1 = fc.Point(52665.5, 427280.9114832536)
-r2 = fc.Point(52705.5, 427288.0885167464)
+l2 = fc.Point(52590.5, 427698.9114832536)
+l1 = fc.Point(52630.5, 427706.0885167464)
+r2 = fc.Point(52665.5, 427280.9114832536)
+r1 = fc.Point(52705.5, 427288.0885167464)
 
 qF = fc.QuadrilateralFilter(l1, l2, r1, r2)
 # print("top Edge length: ")
@@ -32,3 +32,4 @@ qF = fc.QuadrilateralFilter(l1, l2, r1, r2)
 
 arr = fc.TwoDimensionalXYZArrayStraight(qF, './goeree.xyz')
 #fc.RunFilter("goeree.xyz", 52590.5, 427698.9114832536, 52630.5, 427706.0885167464,52665.5, 427280.9114832536, 52705.5, 427288.0885167464)
+#fc.RunFilterOutput2DStraight('goeree.xyz', './', 52590.5, 427698.9114832536, 52630.5, 427706.0885167464,52665.5, 427280.9114832536, 52705.5, 427288.0885167464)
