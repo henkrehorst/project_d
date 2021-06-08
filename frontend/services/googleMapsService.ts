@@ -12,7 +12,7 @@ export const initMap = (id: string): void => {
     loader.load().then(() => {
         map = new google.maps.Map(document.getElementById(id), {
             center: { lat: 51.844, lng: 3.96 },
-            zoom: 15,
+            zoom: 13,
         });
 
         //get location and add marker on click event
@@ -92,8 +92,8 @@ export const initMap = (id: string): void => {
         }
 
         const overlay = new GoogleMapsCustomOverlay(
-            {lat: 51.77848501972589, lng: 3.8524127578460083},
-            {lat: 51.844390919947244, lng: 3.9690633741717383},
+            {lat: 51.7794255, lng: 3.8526257},
+            {lat: 51.8453395, lng: 3.9692927},
             'http://localhost:3000/goeree_full.png'
         );
 
