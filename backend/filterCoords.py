@@ -2,7 +2,6 @@
 import csv
 import numpy
 import math
-from PIL import Image as im
 
 class Point:
 	def __init__(self, x, y, height=-9999):
@@ -286,7 +285,7 @@ class TwoDimensionalXYZArray:
 					self.arr[x,y] = MauricePoint(-9999, 0, 0, x, y, False)
 
 
-def RunFilterOutput2DArray(xyzFile, workingFolder, left1x, left1y, left2x, left2y, right1x, right1y, right2x, right2y):
+def RunFilterOutput2DArray(xyzFile, workingFolder, left1x, left1y, left2x, left2y, right1x, right1y, right2x, right2y, startingPoints):
 	filePath = workingFolder + xyzFile
 	xyzFileHandle = open(xyzFile, 'r')
 
@@ -296,13 +295,12 @@ def RunFilterOutput2DArray(xyzFile, workingFolder, left1x, left1y, left2x, left2
 	right2 = Point(right2x, right2y)
 
 	qFilter = QuadrilateralFilter(left1, left2, right1, right2)
-	print(qFilter.bottomEdge.CalculateLength())
-	print(qFilter.leftEdge.CalculateLength())
-	print(qFilter.leftEdge.p1.y - qFilter.leftEdge.p2.y)
 	output2DArray = TwoDimensionalXYZArray(qFilter)
-	colisions = 0
+
+	# Calculate the starting indexes
+	startingIndexes = (output2DArray.coordinateToIndex(startingPoints[0]), output2DArray.coordinateToIndex(startingPoints[1]))
+
 	i = 0
-	points = 0
 	for line in xyzFileHandle:
 		for val in line.strip().split(" "):
 			i+= 1
@@ -313,37 +311,17 @@ def RunFilterOutput2DArray(xyzFile, workingFolder, left1x, left1y, left2x, left2
 			if i % 3 == 0:
 				tempPoint = Point(x,y,val)
 				if qFilter.withinQuadrilateral(tempPoint):
-					points += 1
 					indexValues = output2DArray.coordinateToIndex(tempPoint)
 					tempMauricePoint = MauricePoint(val, x, y, indexValues["x"], indexValues["y"], True)
-					if bool(output2DArray.arr[tempMauricePoint.x, tempMauricePoint.y]) != False:
-						colisions += 1
+					# if bool(output2DArray.arr[tempMauricePoint.x, tempMauricePoint.y]) != False:
+					# 	colisions += 1
 					output2DArray.addPoint(tempMauricePoint)
+
 	output2DArray.fillEmptyArrayPoints()
-	print("Collisions:", colisions)
-	print("Points:", points)
 	csvOutputArr = numpy.empty((output2DArray.arr.shape[0], output2DArray.arr.shape[1]), dtype=float)
+	
 	for col in output2DArray.arr:
 		for mp in col:
 			csvOutputArr[mp.x, mp.y] = mp.height
-#	numpy.savetxt("arr.csv", csvOutputArr, delimiter=",")
 
-	# Get the starting point for the algorithm
-	# Get it by taking the y length between the left top and bottom point, dividing it by 2, and getting the coordinates for that point
-	# yPositionStartingPoint = qFilter.leftEdge.CalculateLength() + qFilter.leftEdge.p1.y
-	# xPositionStartingPoint = qFilter.leftEdge.GetXForY(yPositionStartingPoint)
-	# tempPoint = Point(xPositionStartingPoint, yPositionStartingPoint)
-	# indexValues = output2DArray.coordinateToIndex(tempPoint)
-	# output2DArray.arr[indexValues["x"], indexValues["y"]] = 255
-
-	for i in range(csvOutputArr.shape[0]):
-		for j in range(csvOutputArr.shape[1]):
-			if csvOutputArr[i,j] != -9999:
-				csvOutputArr[i,j] = csvOutputArr[i,j] * 35
-	data = im.fromarray(csvOutputArr)
-	if data.mode != 'RGB':
-		data = data.convert('RGB')
-	data.save("testFromArray.png")
-
-
-	return output2DArray.arr
+	return output2DArray.arr, startingIndexes
