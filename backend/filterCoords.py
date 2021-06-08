@@ -70,9 +70,6 @@ class Edge:
 		input()
 		return (xValue, yValue)
 
-
-
-
 # Takes 4 points as input, simulates a quadrilateral, and provides functionality to check whether a point appears within this quadrilateral
 class QuadrilateralFilter:
 	def __init__(self, left1, left2, right1, right2):
@@ -224,8 +221,6 @@ class TwoDimensionalXYZArrayStraight:
 		numpy.savetxt("arr.csv", self.arr, delimiter=",")
 		print("Written with", colisions, "collisions and ", points, "points")
 
-
-
 class XYZFileHandler:
 	def __init__(self, xyzFile):
 		self.xyzFileHandle = open(xyzFile, 'r')
@@ -246,7 +241,6 @@ class XYZFileHandler:
 					pointList.append(tempPoint)
 		#print(pointList[0].x, pointList[0].y)
 		return pointList
-
 
 # x and y is the array position, realx and realy are the actual coordinates from the xyz file
 class MauricePoint:
