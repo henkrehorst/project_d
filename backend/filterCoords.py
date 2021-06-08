@@ -282,8 +282,8 @@ class TwoDimensionalXYZArray:
 		for x in range(0, self.arr.shape[0]):
 			for y in range(0, self.arr.shape[1]):
 				if self.arr[x,y] == None:
-					if self.indexToSeaPoint((x,y)):
-						self.arr[x,y] # GA  VERDER
+					# if self.indexToSeaPoint((x,y)):
+					# 	self.arr[x,y] # GA  VERDER
 					self.arr[x,y] = MauricePoint(-9999, 0, 0, x, y, False)
 
 
@@ -322,9 +322,9 @@ def RunFilterOutput2DArray(xyzFile, workingFolder, left1x, left1y, left2x, left2
 	output2DArray.fillEmptyArrayPoints()
 	csvOutputArr = numpy.empty((output2DArray.arr.shape[0], output2DArray.arr.shape[1]), dtype=float)
 	
-	# for col in output2DArray.arr:
-	# 	for mp in col:
-	# 		csvOutputArr[mp.x, mp.y] = float(mp.height) * 35
+	for col in output2DArray.arr:
+		for mp in col:
+	 		csvOutputArr[mp.x, mp.y] = float(mp.height)
 
 #	csvOutputArr = numpy.rot90(csvOutputArr)
 	# img = im.fromarray(csvOutputArr)
