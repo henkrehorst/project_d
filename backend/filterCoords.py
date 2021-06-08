@@ -322,15 +322,15 @@ def RunFilterOutput2DArray(xyzFile, workingFolder, left1x, left1y, left2x, left2
 	output2DArray.fillEmptyArrayPoints()
 	csvOutputArr = numpy.empty((output2DArray.arr.shape[0], output2DArray.arr.shape[1]), dtype=float)
 	
-	for col in output2DArray.arr:
-		for mp in col:
-			csvOutputArr[mp.x, mp.y] = float(mp.height) * 35
+	# for col in output2DArray.arr:
+	# 	for mp in col:
+	# 		csvOutputArr[mp.x, mp.y] = float(mp.height) * 35
 
 #	csvOutputArr = numpy.rot90(csvOutputArr)
-	img = im.fromarray(csvOutputArr)
-	if img.mode != 'RGB':
-	    img = img.convert('RGB')
-	img.save('testimg.png')
+	# img = im.fromarray(csvOutputArr)
+	# if img.mode != 'RGB':
+	#     img = img.convert('RGB')
+	# img.save('testimg.png')
 
 
 	return csvOutputArr, startingIndexes
