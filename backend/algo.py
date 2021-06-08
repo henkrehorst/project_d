@@ -61,7 +61,7 @@ def algorithm(arr, waterLevel, startingPoint):
             level = heightNumber(arr[x][y-1], waterLevel)
             imgArray[y-1][x] = level
             if level != 0:
-                ToCheck.append([y-1][x-1])
+                ToCheck.append([x,y-1])
             
         #check above
         if y + 1 < len(arr[x]) and imgArray[y+1][x] == -1:
@@ -83,7 +83,7 @@ def makeImage(Array):
         j = 0
         while j < len(Array[i]):
             if Array[i][j] == 0 or Array[i][j] == -1:
-                arr[i][j] = [255, 255, 255, 0]
+                arr[i][j] = [0, 0, 0, 0]
             if Array[i][j] == 1:
                 arr[i,j] = [255, 255, 0,100] # Yellow
             if Array[i][j] == 2:

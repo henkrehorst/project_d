@@ -4,7 +4,7 @@ def makeSquare(coor1x, coor1y, coor2x, coor2y):
     x = 0
     y = 0
 
-    while 400 > (x*x) + (y*y):
+    while 10000 > (x*x) + (y*y):
         x += 1
         y += yGrowth
 
