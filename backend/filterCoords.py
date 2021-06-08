@@ -2,6 +2,7 @@
 import csv
 import numpy
 import math
+from PIL import Image as im
 
 class Point:
 	def __init__(self, x, y, height=-9999):
@@ -268,6 +269,11 @@ class TwoDimensionalXYZArray:
 		}
 		return coordinates
 
+	def indexToSeaPoint(self, coordinates):
+		minMaxValues = self.QFilter.getMinMaxValues()
+		newPoint = Point(coordinates[0] + minMaxValues[1],coordinates[1] + minMaxValues[3])
+		return coordinates
+
 	def addPoint(self, mauricePoint):
 		self.arr[mauricePoint.x, mauricePoint.y] = mauricePoint
 		return
@@ -276,6 +282,8 @@ class TwoDimensionalXYZArray:
 		for x in range(0, self.arr.shape[0]):
 			for y in range(0, self.arr.shape[1]):
 				if self.arr[x,y] == None:
+					if self.indexToSeaPoint((x,y)):
+						self.arr[x,y] # GA  VERDER
 					self.arr[x,y] = MauricePoint(-9999, 0, 0, x, y, False)
 
 
@@ -316,6 +324,13 @@ def RunFilterOutput2DArray(xyzFile, workingFolder, left1x, left1y, left2x, left2
 	
 	for col in output2DArray.arr:
 		for mp in col:
-			csvOutputArr[mp.x, mp.y] = mp.height
+			csvOutputArr[mp.x, mp.y] = float(mp.height) * 35
+
+	csvOutputArr = numpy.rot90(csvOutputArr)
+	img = im.fromarray(csvOutputArr)
+	if img.mode != 'RGB':
+	    img = img.convert('RGB')
+	img.save('testimg.png')
+
 
 	return csvOutputArr, startingIndexes
