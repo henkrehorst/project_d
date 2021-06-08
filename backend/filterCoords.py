@@ -56,7 +56,7 @@ class Edge:
 		xValue = xModifier * (1 + abs(self.slope))
 		xValue += self.p1.x
 		yValue = self.GetYForX(xValue)
-		print((xValue, yValue))
+		#print((xValue, yValue))
 		input()
 		return (xValue, yValue)
 
@@ -67,7 +67,7 @@ class Edge:
 		yValue = yModifier * (1 + abs(self.slope))
 		yValue += self.p1.y
 		xValue = self.GetXForY(xValue)
-		print((xValue, yValue))
+		#print((xValue, yValue))
 		input()
 		return (xValue, yValue)
 
