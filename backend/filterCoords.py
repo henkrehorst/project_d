@@ -296,6 +296,9 @@ def RunFilterOutput2DArray(xyzFile, workingFolder, left1x, left1y, left2x, left2
 	right2 = Point(right2x, right2y)
 
 	qFilter = QuadrilateralFilter(left1, left2, right1, right2)
+	print(qFilter.bottomEdge.CalculateLength())
+	print(qFilter.leftEdge.CalculateLength())
+	print(qFilter.leftEdge.p1.y - qFilter.leftEdge.p2.y)
 	output2DArray = TwoDimensionalXYZArray(qFilter)
 	colisions = 0
 	i = 0
@@ -324,6 +327,15 @@ def RunFilterOutput2DArray(xyzFile, workingFolder, left1x, left1y, left2x, left2
 		for mp in col:
 			csvOutputArr[mp.x, mp.y] = mp.height
 #	numpy.savetxt("arr.csv", csvOutputArr, delimiter=",")
+
+	# Get the starting point for the algorithm
+	# Get it by taking the y length between the left top and bottom point, dividing it by 2, and getting the coordinates for that point
+	# yPositionStartingPoint = qFilter.leftEdge.CalculateLength() + qFilter.leftEdge.p1.y
+	# xPositionStartingPoint = qFilter.leftEdge.GetXForY(yPositionStartingPoint)
+	# tempPoint = Point(xPositionStartingPoint, yPositionStartingPoint)
+	# indexValues = output2DArray.coordinateToIndex(tempPoint)
+	# output2DArray.arr[indexValues["x"], indexValues["y"]] = 255
+
 	for i in range(csvOutputArr.shape[0]):
 		for j in range(csvOutputArr.shape[1]):
 			if csvOutputArr[i,j] != -9999:
@@ -332,5 +344,6 @@ def RunFilterOutput2DArray(xyzFile, workingFolder, left1x, left1y, left2x, left2
 	if data.mode != 'RGB':
 		data = data.convert('RGB')
 	data.save("testFromArray.png")
+
 
 	return output2DArray.arr
