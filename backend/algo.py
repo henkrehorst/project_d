@@ -36,28 +36,28 @@ def algorithm(arr, waterLevel, startingPoint):
         y = ToCheck[0][1]
         
         #check left
-        if x - 1 > 0 and imgArray[y][x-1] != -1:
+        if x - 1 > 0 and imgArray[y][x-1] == -1:
             level = heightNumber(arr[x-1][y], waterLevel)
             imgArray[y][x-1] = level
             if level != 0:
                 ToCheck.append([x-1,y])
 
         #check right
-        if x + 1 < len(arr) and imgArray[y][x+1] != -1:
+        if x + 1 < len(arr) and imgArray[y][x+1] == -1:
             level = heightNumber(arr[x+1][y], waterLevel)
             imgArray[y][x+1] = level
             if level != 0:
                 ToCheck.append([x+1,y])
             
             #check under
-        if y - 1 > 0 and imgArray[y-1][x] != -1:
+        if y - 1 > 0 and imgArray[y-1][x] == -1:
             level = heightNumber(arr[x][y-1], waterLevel)
             imgArray[y-1][x] = level
             if level != 0:
                 ToCheck.append([x,y-1])
             
         #check above
-        if y + 1 < len(arr[x]) and imgArray[y+1][x] != -1:
+        if y + 1 < len(arr[x]) and imgArray[y+1][x] == -1:
             level = heightNumber(arr[x][y+1], waterLevel)
             imgArray[y+1][x] = level
             if level != 0:
@@ -88,4 +88,4 @@ def makeImage(Array):
 
     # Convert the array to image and save it
     image = Image.fromarray(arr)
-    image.save('test.png', 'PNG', transparency=0)
+    image.save('test.png')
