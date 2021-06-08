@@ -82,17 +82,17 @@ def fillSquare(array, filter, file):
 
 
 
-square = sm.makeSquare(52610.5,427702.5,52685.5,427284.5)
+# square = sm.makeSquare(52610.5,427702.5,52685.5,427284.5)
 
-left1 = fc.Point(square["left1"]["x"], square["left1"]["y"])
-left2 = fc.Point(square["left2"]["x"], square["left2"]["y"])
-right1 = fc.Point(square["right1"]["x"], square["right1"]["y"])
-right2 = fc.Point(square["right2"]["x"], square["right2"]["y"])
+# left1 = fc.Point(square["left1"]["x"], square["left1"]["y"])
+# left2 = fc.Point(square["left2"]["x"], square["left2"]["y"])
+# right1 = fc.Point(square["right1"]["x"], square["right1"]["y"])
+# right2 = fc.Point(square["right2"]["x"], square["right2"]["y"])
 
-filter = fc.QuadrilateralFilter(left1,left2,right1,right2)
+# filter = fc.QuadrilateralFilter(left1,left2,right1,right2)
 
-arr = straightSquare(square)
+# arr = straightSquare(square)
 
-arr2 = fillSquare(arr,filter, "goeree.xyz")
+# arr2 = fillSquare(arr,filter, "goeree.xyz")
 
-print(square)
+# print(square)
