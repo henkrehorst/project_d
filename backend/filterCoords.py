@@ -50,25 +50,25 @@ class Edge:
 	# Takes as input the corner edge
 	# ONLY WORKS FROM THE BOTTOM EDGE
 	# GIVE LEFT EDGE AS INPUT
-	def IntersectionPoint(self, point, edge):
+	def IntersectionPointHorizontal(self, point, edge):
 		xModifier = point.x - edge.p1.x  
 		xValue = xModifier * (1 + abs(self.slope))
 		xValue += self.p1.x
 		yValue = self.GetYForX(xValue)
+		print((xValue, yValue))
+		input()
 		return (xValue, yValue)
 
-	# def CalculateOffset(self, coords):
-	# 	tempPoint = point(coords)
-	# 	if point.x > self.p1.x:
-	# 		length = point.x-self.p1.x
-	# 	else:
-	# 		length = self.p1.x - point.x
-
-	# 	if point.y > self.p1.y:
-	# 		height = point.y-self.p1.y
-	# 	else:
-	# 		height = self.p1.y - point.y
-
+	# MADE FOR THE LEFT EDGE
+	# GIVE BOTTOM EDGE AS INPUT
+	def IntersectionPointVertical(self, point, edge):
+		yModifier = point.y - edge.p1.y
+		yValue = yModifier * (1 + abs(self.slope))
+		yValue += self.p1.y
+		xValue = self.GetXForY(xValue)
+		print((xValue, yValue))
+		input()
+		return (xValue, yValue)
 
 
 
@@ -194,7 +194,7 @@ class TwoDimensionalXYZArrayStraight:
 					y = float(val)
 				if i % 3 == 0:
 					point = Point(x,y,val)
-					print(point.x, point.y, point.height)
+					#print(point.x, point.y, point.height)
 					if self.QFilter.withinQuadrilateral(point):
 						points += 1
 						realCoords = self.calculateOffsetFromPoint(point)
@@ -235,3 +235,71 @@ class XYZFileHandler:
 					pointList.append(tempPoint)
 		#print(pointList[0].x, pointList[0].y)
 		return pointList
+
+
+# x and y is the array position, realx and realy are the actual coordinates from the xyz file
+class MauricePoint:
+	def __init__(self, height, realx, realy, x, y, isPoint):
+		self.height = height
+		self.isPoint = isPoint
+		self.RGB = RGB
+		self.x = x
+		self.y = y
+		self.point = Point(realx, realy)
+
+class TwoDimensionalXYZArray:
+	def __init__(self, QFilter):
+		self.QFilter = QFilter
+		self.arr = self.createArray()
+
+	def createArray(self):
+		proportions = self.QFilter.getProportions()
+		return numpy.empty((proportions[0], proportions[1]), dtype=MauricePoint)
+
+	def coordinateToIndex(self, point):
+		minMaxValues = self.QFilter.getMinMaxValues()
+		coordinates = {
+			"x" : int(point.x - minMaxValues[1]),
+			"y" : int(point.y - minMaxValues[3])
+		}
+		return coordinates
+
+	def addPoint(self, mauricePoint):
+		self.arr[mauricePoint.x, mauricePoint.y] = mauricePoint
+		return
+
+	def fillEmptyArrayPoints(self):
+		for x in range(0, self.arr.shape[0]):
+			for y in range(0, self.arr.shape[1]):
+				if self.arr[x,y] == None:
+					self.arr[x,y] = MauricePoint(-9999, 0, 0, x, y, False)
+
+
+def RunFilterOutput2DArray(xyzFile, workingFolder, left1x, left1y, left2x, left2y, right1x, right1y, right2x, right2y):
+	filePath = workingFolder + xyzFile
+	xyzFileHandle = open(xyzFile, 'r')
+
+	left1 = Point(left1x, left1y)
+	left2 = Point(left2x, left2y)
+	right1 = Point(right1x, right1y)
+	right2 = Point(right2x, right2y)
+
+	qFilter = QuadrilateralFilter(left1, left2, right1, right2)
+	output2DArray = TwoDimensionalXYZArray(qFilter)
+
+	i = 0
+	for line in xyzFileHandle:
+		for val in line.strip().split(" "):
+			i+= 1
+			if i % 3 == 1:
+				x = float(val)
+			if i % 3 == 2:
+				y = float(val)
+			if i % 3 == 0:
+				tempPoint = Point(x,y)
+				if qFilter.withinQuadrilateral(tempPoint):
+					indexValues = output2DArray.coordinateToIndex(tempPoint)
+					tempMauricePoint = MauricePoint(val, x, y, indexValues["x"], indexValues["y"], True)
+					output2DArray.addPoint(tempMauricePoint)
+	output2DArray.fillEmptyArrayPoints()
+	return output2DArray.arr
