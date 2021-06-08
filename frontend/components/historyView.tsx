@@ -4,5 +4,5 @@ import {Text} from "@chakra-ui/react";
 interface HistoryProps {}
 
 export const HistoryView: FunctionComponent<HistoryProps> = ({}) => (
-  <Text>History view</Text>
+  <Text fontWeight={'bold'}>Recente berekeningen</Text>
 );

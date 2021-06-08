@@ -1,4 +1,6 @@
-import { Loader} from "@googlemaps/js-api-loader";
+import {Loader} from "@googlemaps/js-api-loader";
+import {MapStore} from "../stores/mapStore";
+import {observer} from "mobx-react-lite";
 
 const loader = new Loader({
     apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAP_KEY,
@@ -6,29 +8,51 @@ const loader = new Loader({
 })
 
 let map: google.maps.Map;
+let overlay: any;
+let markers = [];
 
-export const initMap = (id: string): void => {
+interface latLng {
+    lat: number,
+    lng: number
+}
+
+export const initMap = (id: string, mapStore: MapStore): void => {
+
     //load google map by element id
     loader.load().then(() => {
         map = new google.maps.Map(document.getElementById(id), {
-            center: { lat: 51.844, lng: 3.96 },
+            center: mapStore.centerPoint,
             zoom: 13,
         });
 
         //get location and add marker on click event
         map.addListener('click', (event) => {
-            console.log(event.latLng.toJSON());
-            new google.maps.Marker({
-                position: event.latLng.toJSON(),
-                map,
-                title: "click"
-            })
-        });
+            if (!mapStore.pointAExists || !mapStore.pointBExists) {
+                console.log(event.latLng.lng());
+                const marker = new google.maps.Marker({
+                    position: event.latLng.toJSON(),
+                    map,
+                    title: "click to remove"
+                });
 
-        interface latLng {
-            lat: number,
-            lng: number
-        }
+                if (!mapStore.pointAExists) {
+                    mapStore.setPointA(event.latLng.lat(), event.latLng.lng());
+                } else {
+                    mapStore.setPointB(event.latLng.lat(), event.latLng.lng());
+                }
+
+                markers.push(marker);
+                marker.addListener('click', (event) => {
+                    if (marker.getPosition().lat() === mapStore.pointALat &&
+                        marker.getPosition().lat() === mapStore.pointALat) {
+                        mapStore.removePointA();
+                    } else {
+                        mapStore.removePointB();
+                    }
+                    marker.setMap(null);
+                });
+            }
+        });
 
         class GoogleMapsCustomOverlay extends google.maps.OverlayView {
             private bounds: google.maps.LatLngBounds;
@@ -64,7 +88,7 @@ export const initMap = (id: string): void => {
                 panes.overlayLayer.appendChild(this.div);
             }
 
-            draw(){
+            draw() {
                 const projection = this.getProjection();
 
                 const sw = projection.fromLatLngToDivPixel(
@@ -91,13 +115,96 @@ export const initMap = (id: string): void => {
             }
         }
 
-        const overlay = new GoogleMapsCustomOverlay(
-            {lat: 51.7794255, lng: 3.8526257},
-            {lat: 51.8453395, lng: 3.9692927},
-            'http://localhost:3000/goeree_full.png'
+        overlay = new GoogleMapsCustomOverlay(
+            mapStore.mapImageLowerLeft,
+            mapStore.mapImageUpperRight,
+            mapStore.mapImageSrc
         );
 
         overlay.setMap(map);
     });
 };
+
+
+
+export const refreshMap = (store: MapStore) => {
+    map.setCenter(store.centerPoint);
+    map.setZoom(13);
+    //remove all markers on map
+    for (let i = 0; i < markers.length; i++) {
+        markers[i].setMap(null);
+    }
+    overlay.setMap(null);
+
+
+    class GoogleMapsCustomOverlay extends google.maps.OverlayView {
+        private bounds: google.maps.LatLngBounds;
+        private image: string;
+        private div?: HTMLElement;
+
+        constructor(startCoordinate: latLng, endCoordinate: latLng, imageSrc: string) {
+            super();
+
+            this.bounds = new google.maps.LatLngBounds(
+                new google.maps.LatLng(startCoordinate.lat, startCoordinate.lng),
+                new google.maps.LatLng(endCoordinate.lat, endCoordinate.lng)
+            );
+            this.image = imageSrc;
+        }
+
+        onAdd() {
+            this.div = document.createElement("div");
+            this.div.style.borderStyle = "none";
+            this.div.style.borderWidth = "0px";
+            this.div.style.position = "absolute";
+
+            // Create the img element and attach it to the div.
+            const img = document.createElement("img");
+            img.src = this.image;
+            img.style.width = "100%";
+            img.style.height = "100%";
+            img.style.position = "absolute";
+            this.div.appendChild(img);
+
+            // Add the element to the "overlayLayer" pane.
+            const panes = this.getPanes()!;
+            panes.overlayLayer.appendChild(this.div);
+        }
+
+        draw() {
+            const projection = this.getProjection();
+
+            const sw = projection.fromLatLngToDivPixel(
+                this.bounds.getSouthWest()
+            )!;
+            const ne = projection.fromLatLngToDivPixel(
+                this.bounds.getNorthEast()
+            )!;
+
+            // Resize the image's div to fit the indicated dimensions.
+            if (this.div) {
+                this.div.style.left = sw.x + "px";
+                this.div.style.top = ne.y + "px";
+                this.div.style.width = ne.x - sw.x + "px";
+                this.div.style.height = sw.y - ne.y + "px";
+            }
+        }
+
+        onRemove() {
+            if (this.div) {
+                (this.div.parentNode as HTMLElement).removeChild(this.div);
+                delete this.div;
+            }
+        }
+    }
+
+    overlay = new GoogleMapsCustomOverlay(
+        store.mapImageLowerLeft,
+        store.mapImageUpperRight,
+        store.mapImageSrc
+    );
+
+    overlay.setMap(map);
+};
+
 

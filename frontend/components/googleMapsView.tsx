@@ -1,15 +1,18 @@
-import {FunctionComponent, useEffect} from "react";
+import {FunctionComponent, useContext, useEffect} from "react";
 import {initMap} from "../services/googleMapsService";
 import {Box} from "@chakra-ui/react";
+import {observer} from 'mobx-react-lite';
+import {MapContext} from "../stores/mapStore";
 
-interface MapProps {}
 
-const GoogleMapsView: FunctionComponent<MapProps> = ({}) => {
+const GoogleMapsView= () => {
+    const map = useContext(MapContext);
     useEffect(() => {
-        initMap('google-maps-placeholder')
+        initMap('google-maps-placeholder', map)
     })
+
 
     return <Box h={'100%'} id={'google-maps-placeholder'}/>;
 };
 
-export default GoogleMapsView;
+export default observer(GoogleMapsView);
