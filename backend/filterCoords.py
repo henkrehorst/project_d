@@ -326,7 +326,7 @@ def RunFilterOutput2DArray(xyzFile, workingFolder, left1x, left1y, left2x, left2
 		for mp in col:
 			csvOutputArr[mp.x, mp.y] = float(mp.height) * 35
 
-	csvOutputArr = numpy.rot90(csvOutputArr)
+#	csvOutputArr = numpy.rot90(csvOutputArr)
 	img = im.fromarray(csvOutputArr)
 	if img.mode != 'RGB':
 	    img = img.convert('RGB')
