@@ -318,4 +318,4 @@ def RunFilterOutput2DArray(xyzFile, workingFolder, left1x, left1y, left2x, left2
 		for mp in col:
 			csvOutputArr[mp.x, mp.y] = mp.height
 
-	return output2DArray.arr, startingIndexes
+	return csvOutputArr, startingIndexes
