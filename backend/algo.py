@@ -1,4 +1,3 @@
-from GetPoints import straightSquare
 from numpy.core.records import array
 from PIL import Image
 import numpy as np
@@ -67,7 +66,7 @@ def algorithm(arr, waterLevel, startingPoint):
     return imgArray
 
 
-def makeImage(Array):
+def makeImage(Array, name):
     # Make the array needed to convert it later to a image
     arr = np.zeros([len(Array),len(Array[0]), 4], dtype=np.uint8)
     i = 0
@@ -88,4 +87,4 @@ def makeImage(Array):
 
     # Convert the array to image and save it
     image = Image.fromarray(arr)
-    image.save('test.png')
+    image.save(name + '.png') #ToDo: save image somewhere else and name should be given differently

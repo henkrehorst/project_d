@@ -1,10 +1,10 @@
-def makeSquare(coor1x, coor1y, coor2x, coor2y):
+def makeSquare(coor1x, coor1y, coor2x, coor2y, breedte):
     yGrowth = -1*((coor2x - coor1x) / (coor2y - coor1y))
     
     x = 0
     y = 0
 
-    while 10000 > (x*x) + (y*y):
+    while (breedte*breedte) > (x*x) + (y*y):
         x += 1
         y += yGrowth
 

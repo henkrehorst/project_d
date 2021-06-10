@@ -1,31 +1,45 @@
-from flask import Flask
+from flask import Flask, request
 from flask_restful import Api, Resource
 from subprocess import Popen
+from threading import Thread
+import datetime
+import json
 
-from squareMaker import makeSquare
-from filterCoords import RunFilter
+import db
+from Calculator import Calculation
 
 app = Flask(__name__)
 api = Api(app)
 
-class Conversion(Resource):
-    def get(self, filename):
-        Process = Popen('conversion.sh %s' % (filename,), shell=True)
+
+class thread(Resource):
+    def post(self, duration):
+        thread = Thread(target=threaded_task, args=(duration,))
+        thread.daemon = True
+        thread.start()
+        return jsonify({'thread_name': str(thread.name),
+                        'started': True})
 
 class Algorithm(Resource):
-    def get(self,filename,coordinates):
-        XCoordinate1 = float(coordinates.split('-')[0].split('_')[0])
-        YCoordinate1 = float(coordinates.split('-')[0].split('_')[1])
-        XCoordinate2 = float(coordinates.split('-')[1].split('_')[0])
-        YCoordinate2 = float(coordinates.split('-')[1].split('_')[1])
+    def post(self):
+        data = json.loads(request.get_json())
 
-        square = makeSquare(XCoordinate1,YCoordinate1,XCoordinate2,YCoordinate2)
+        dt = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+        name = str(data["locatie"]) + " " + dt
 
-        newfilename = RunFilter(filename, square["left1"]["x"],square["left1"]["y"],square["right1"]["x"],square["right1"]["y"],square["right2"]["x"],square["right2"]["y"],square["left2"]["x"],square["left2"]["y"])
+        imgId = db.insertAlgo(data['locatieId'], name)
 
-        return {"Filename": newfilename}
+        thread = Thread(target=Calculation, args=(data,name,imgId))
+        
+        thread.daemon = True
+        thread.start()
 
-api.add_resource(Algorithm, "/algorithm/<string:filename>/<string:coordinates>")
+        return imgId
+        
+        
+
+api.add_resource(Algorithm, "/algorithm")
+api.add_resource(thread, "/thread/<int:duration>")
 
 if __name__ == "__main__":
     app.run(debug=True)
