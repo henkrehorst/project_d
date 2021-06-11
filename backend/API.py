@@ -36,7 +36,7 @@ class data(Resource):
 
 class Algorithm(Resource):
     def post(self):
-        data = json.loads(request.get_json())
+        data = request.get_json()
 
         dt = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")
         name = str(data["locatie"]) + " " + dt
