@@ -291,7 +291,7 @@ class TwoDimensionalXYZArray:
 def RunFilterOutput2DArray(xyzFile, workingFolder, left1x, left1y, left2x, left2y, right1x, right1y, right2x, right2y,
                            startingPoints):
     filePath = workingFolder + xyzFile
-    xyzFileHandle = open(xyzFile, 'r')
+    xyzFileHandle = open(filePath, 'r')
 
     left1 = Point(left1x, left1y)
     left2 = Point(left2x, left2y)

@@ -4,17 +4,17 @@ from mysql.connector import errorcode
 
 def insertAlgo(duneId, name):
     try:
-        mydb = mysql.connector.connect(user="root", password="root",host="localhost",database="project_d")
+        mydb = mysql.connector.connect(user="root", password="root", host="localhost", database="project_d")
         cursor = mydb.cursor()
-        
+
         Insert_Img = "INSERT INTO algorithmimage (Name, DuneLocation) VALUES(%s,%s)"
 
         cursor.execute(Insert_Img, (name, duneId))
         mydb.commit()
-        
+
         Id_Inserted = cursor.lastrowid
-        
-        #Close contections
+
+        # Close contections
         cursor.close()
         mydb.close()
 
@@ -31,15 +31,15 @@ def insertAlgo(duneId, name):
 
 def updateAlgo(link, top, bottom, imageId):
     try:
-        mydb = mysql.connector.connect(user="root", password="root",host="localhost",database="project_d")
-
+        mydb = mysql.connector.connect(user="root", password="root", host="localhost", database="project_d")
+        cursor = mydb.cursor()
         Update_Img = "UPDATE algorithmimage SET Link = %s,  TopCoordinate = %s, BottomCoordinate = %s WHERE Id = %s"
 
         cursor.execute(Update_Img, (link, top, bottom, imageId))
 
         mydb.commit()
-        
-        #Close contections
+
+        # Close contections
         cursor.close()
         mydb.close()
         return "oke"
@@ -52,18 +52,19 @@ def updateAlgo(link, top, bottom, imageId):
         else:
             return err
 
+
 def getData():
     try:
-        mydb = mysql.connector.connect(user="root", password="root",host="localhost",database="project_d")
+        mydb = mysql.connector.connect(user="root", password="root", host="localhost", database="project_d")
         cursor = mydb.cursor()
 
-        Select_Dunes = "SELECT * FROM dunes" 
+        Select_Dunes = "SELECT * FROM dunes"
 
         cursor.execute(Select_Dunes)
 
         data = cursor.fetchall()
-        
-        #Close contections
+
+        # Close contections
         cursor.close()
         mydb.close()
         return data
