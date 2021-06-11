@@ -12,13 +12,28 @@ app = Flask(__name__)
 api = Api(app)
 
 
-class thread(Resource):
+class data(Resource):
     def post(self, duration):
-        thread = Thread(target=threaded_task, args=(duration,))
-        thread.daemon = True
-        thread.start()
-        return jsonify({'thread_name': str(thread.name),
-                        'started': True})
+        dbData = db.getData()
+        dic = {
+            "loc1": {
+            "id": line[0][0]
+            "location": line[0][1]
+            "upperright": line[0][2]
+            "lowerleft": line[0][3]
+            "centercoordinate": line[0][4]
+            "link": line[0][5]},
+            "loc2": {
+            "id": line[1][0]
+            "location": line[1][1]
+            "upperright": line[1][2]
+            "lowerleft": line[1][3]
+            "centercoordinate": line[1][4]
+            "link": line[1][5]}
+            }
+        
+
+        return jsonify(dic)
 
 class Algorithm(Resource):
     def post(self):
