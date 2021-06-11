@@ -12,7 +12,7 @@ def Calculation(data, name, imgId):
 
     #upload image to blob storage
     link = blobService.Upload(imgName)
-
+    #ToDo: remove image after uploading
     #Update database
     a = db.updateAlgo(link, str(cornerpoints[0]), str(cornerpoints[1]), data["locatieId"])
     print(a)

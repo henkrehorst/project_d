@@ -4,7 +4,7 @@ from azure.storage.blob import ContainerClient, BlobClient, ContentSettings
 def Upload(filename):
     azure_storage_connectionstring="DefaultEndpointsProtocol=https;AccountName=projectdimages;AccountKey=h30l1NRl/ROT4XqV6YEI+RCNl6MWzLPhjswBF5pl/pOFSF3sbsaW9qaIUqQxaDbgEAoEEfciErSaJBl9TFofFQ==;EndpointSuffix=core.windows.net"
     container_name = "images"
-    source_folder = "./"#"./data/" ToDo: path
+    source_folder = "./"
 
     my_content_settings = ContentSettings(content_type='image/png')
     url = ""

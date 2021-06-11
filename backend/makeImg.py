@@ -16,8 +16,7 @@ def Image(data, name):
     startingPoints = (fc.Point(data["punt_a"]["x"],data["punt_a"]["y"]), fc.Point(data["punt_b"]["x"],data["punt_b"]["y"]))
 
     #Get a tuple with starting points and the array with heights that are needed
-    #ToDo: path
-    tp = fc.RunFilterOutput2DArray(data["locatie"]+ ".xyz", './', l1.x, l1.y, l2.x, l2.y, r1.x, r1.y, r2.x, r2.y, startingPoints)
+    tp = fc.RunFilterOutput2DArray(data["locatie"]+ ".xyz", '/home/azureuser/data/xyz/', l1.x, l1.y, l2.x, l2.y, r1.x, r1.y, r2.x, r2.y, startingPoints)
 
     #First make an array and then convert the array to an image
     imgArr = algo.algorithm(tp[0], 4, tp[1][0])

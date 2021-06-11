@@ -4,7 +4,7 @@ from mysql.connector import errorcode
 
 def insertAlgo(duneId, name):
     try:
-        mydb = mysql.connector.connect(user="root", password="admin",host="localhost",database="dunetool")
+        mydb = mysql.connector.connect(user="root", password="root",host="localhost",database="project_d")
         cursor = mydb.cursor()
         
         Insert_Img = "INSERT INTO algorithmimage (Name, DuneLocation) VALUES(%s,%s)"
@@ -31,8 +31,7 @@ def insertAlgo(duneId, name):
 
 def updateAlgo(link, top, bottom, imageId):
     try:
-        mydb = mysql.connector.connect(user="root", password="admin",host="localhost",database="dunetool") #ToDo: connection parameters
-        cursor = mydb.cursor()
+        mydb = mysql.connector.connect(user="root", password="root",host="localhost",database="project_d")
 
         Update_Img = "UPDATE algorithmimage SET Link = %s,  TopCoordinate = %s, BottomCoordinate = %s WHERE Id = %s"
 
@@ -55,7 +54,7 @@ def updateAlgo(link, top, bottom, imageId):
 
 def getData():
     try:
-        mydb = mysql.connector.connect(user="root", password="admin",host="localhost",database="dunetool") #ToDo: connection parameters
+        mydb = mysql.connector.connect(user="root", password="root",host="localhost",database="project_d")
         cursor = mydb.cursor()
 
         Select_Dunes = "SELECT * FROM dunes" 

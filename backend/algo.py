@@ -87,4 +87,4 @@ def makeImage(Array, name):
 
     # Convert the array to image and save it
     image = Image.fromarray(arr)
-    image.save(name + '.png') #ToDo: save image somewhere else and name should be given differently
+    image.save(name + '.png')
