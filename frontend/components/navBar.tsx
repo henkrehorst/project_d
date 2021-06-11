@@ -8,8 +8,8 @@ import {
     ModalBody,
     ModalCloseButton, ModalContent,
     ModalFooter,
-    ModalHeader, ModalOverlay,
-    Spacer,
+    ModalHeader, ModalOverlay, Slider, SliderFilledTrack, SliderThumb, SliderTrack,
+    Spacer, Text,
     useDisclosure
 } from "@chakra-ui/react";
 import {MapSelection} from "./mapSelection";
@@ -29,6 +29,14 @@ export const NavBar = observer(() => {
         refreshMap(map);
     }
 
+    const changeHeight= (value: number) => {
+        map.setHeight(value);
+    }
+
+    const changeWidth= (value: number) => {
+        map.setWidth(value);
+    }
+
     return (
         <>
             <Flex backgroundColor={"blue.600"} w={'100%'} p={4} h={'72px'}>
@@ -46,15 +54,35 @@ export const NavBar = observer(() => {
                         {!map.pointAExists || !map.pointBExists ?
                             <Alert status="error">
                                 <AlertIcon/>
-                                Selecteer eerst twee punten om het path finding algoritme tussen de twee punten te kunnen starten!
+                                Selecteer eerst twee punten om het path finding algoritme tussen de twee punten te
+                                kunnen starten!
                             </Alert>
-                            : 'Klik op run calculation om het path finding algoritme tussen de twee geselecteerde punten te starten.'}
+                            : <>
+                                <Text>Klik op run calculation om het path finding algoritme tussen de twee geselecteerde punten te starten.</Text>
+                                <Text fontWeight={'bold'} marginTop={'20px'}>Hoogte: {map.height}</Text>
+                                <Slider defaultValue={map.height} onChange={changeHeight} min={1} max={15} step={1}>
+                                    <SliderTrack bg="blue.100">
+                                        <Box position="relative" right={10}/>
+                                        <SliderFilledTrack bg="blue.800"/>
+                                    </SliderTrack>
+                                    <SliderThumb boxSize={6}/>
+                                </Slider>
+                                <Text fontWeight={'bold'}>Breedte: {map.width}</Text>
+                                <Slider defaultValue={map.width} onChange={changeWidth} min={40} max={200} step={20}>
+                                    <SliderTrack bg="blue.100">
+                                        <Box position="relative" right={10}/>
+                                        <SliderFilledTrack bg="blue.800"/>
+                                    </SliderTrack>
+                                    <SliderThumb boxSize={6}/>
+                                </Slider>
+                            </>}
                     </ModalBody>
                     <ModalFooter>
                         {map.pointAExists && map.pointBExists ?
                             <Button colorScheme="green" mr={3}>
                                 Run calculation
-                            </Button> : ''}
+                            </Button>
+                            : ''}
                         <Button onClick={onClose}>Cancel</Button>
                     </ModalFooter>
                 </ModalContent>

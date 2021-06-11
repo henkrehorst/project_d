@@ -16,6 +16,8 @@ export class MapStore {
     pointALng: number;
     pointBLat: number;
     pointBLng: number;
+    height: number;
+    width: number;
 
     constructor(
         location: string,
@@ -33,6 +35,8 @@ export class MapStore {
         this.pointAExists = false;
         this.pointBExists = false;
         this.status = 'selection'
+        this.height = 4;
+        this.width = 100;
         // @ts-ignore
     }
 
@@ -50,6 +54,8 @@ export class MapStore {
         this.centerPoint = center;
         this.pointAExists = false;
         this.pointBExists = false;
+        this.height = 4;
+        this.width = 100;
         // @ts-ignore
     }
 
@@ -69,6 +75,14 @@ export class MapStore {
         this.pointBLat = lat;
         this.pointBLng = lng;
         this.pointBExists = true;
+    }
+
+    setHeight(val: number){
+        this.height = val;
+    }
+
+    setWidth(val: number){
+        this.width = val;
     }
 
     removePointB(){

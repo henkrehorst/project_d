@@ -13,7 +13,7 @@ export const MapSelection = observer(() => {
         if (event.target.value === 'goeree') {
             map.changeLocation(
                 'goeree',
-                '/goeree_full.png',
+                'https://projectdimages.blob.core.windows.net/images/goereeMap.png',
                 {lat: 51.7794255, lng: 3.8526257},
                 {lat: 51.8453395, lng: 3.9692927},
                 {lng: 3.96, lat: 51.844},
@@ -22,7 +22,7 @@ export const MapSelection = observer(() => {
         } else if (event.target.value === 'voorne') {
             map.changeLocation(
                 'voorne',
-                '/voorne.png',
+                'https://projectdimages.blob.core.windows.net/images/voorneMap.png',
                 {lat: 51.844046, lng: 4.0294408},
                 {lat: 51.9248775, lng: 4.0703739},
                 {lng: 4.0703739, lat: 51.9248775},

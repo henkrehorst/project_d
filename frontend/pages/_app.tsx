@@ -5,7 +5,7 @@ import {MapStore, MapContext} from "../stores/mapStore";
 
 let store = new MapStore(
     'goeree',
-    '/goeree_full.png',
+    'https://projectdimages.blob.core.windows.net/images/goereeMap.png',
     {lat: 51.7794255, lng: 3.8526257},
     {lat: 51.8453395, lng: 3.9692927},
     {lng: 3.96, lat: 51.844},
