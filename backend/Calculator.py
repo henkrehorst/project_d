@@ -14,5 +14,5 @@ def Calculation(data, name, imgId):
     link = blobService.Upload(imgName)
     #ToDo: remove image after uploading
     #Update database
-    a = db.updateAlgo(link, str(cornerpoints[0]), str(cornerpoints[1]), data["locatieId"])
+    a = db.updateAlgo(link, str(cornerpoints[0]), str(cornerpoints[1]), imgId)
     print(a)
