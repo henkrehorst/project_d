@@ -28,7 +28,6 @@ def insertAlgo(duneId, name):
         else:
             return err
 
-
 def updateAlgo(link, top, bottom, imageId):
     try:
         mydb = mysql.connector.connect(user="root", password="root", host="localhost", database="project_d")
@@ -52,7 +51,6 @@ def updateAlgo(link, top, bottom, imageId):
         else:
             return err
 
-
 def getData():
     try:
         mydb = mysql.connector.connect(user="root", password="root", host="localhost", database="project_d")
@@ -61,6 +59,54 @@ def getData():
         Select_Dunes = "SELECT * FROM dunes"
 
         cursor.execute(Select_Dunes)
+
+        data = cursor.fetchall()
+
+        # Close contections
+        cursor.close()
+        mydb.close()
+        return data
+
+    except mysql.connector.Error as err:
+        if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+            return "Something is wrong with your user name or password"
+        elif err.errno == errorcode.ER_BAD_DB_ERROR:
+            return "Database does not exist"
+        else:
+            return err
+
+def getHistory(duneId):
+    try:
+        mydb = mysql.connector.connect(user="root", password="root", host="localhost", database="project_d")
+        cursor = mydb.cursor()
+
+        Select_History = "SELECT * FROM algorithmimage WHERE DuneLocation = %s"
+
+        cursor.execute(Select_History % (duneId))
+
+        data = cursor.fetchall()
+
+        # Close contections
+        cursor.close()
+        mydb.close()
+        return data
+
+    except mysql.connector.Error as err:
+        if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+            return "Something is wrong with your user name or password"
+        elif err.errno == errorcode.ER_BAD_DB_ERROR:
+            return "Database does not exist"
+        else:
+            return err
+
+def getOneCal(imgId):
+    try:
+        mydb = mysql.connector.connect(user="root", password="root", host="localhost", database="project_d")
+        cursor = mydb.cursor()
+
+        Select_Image = "SELECT * FROM algorithmimage WHERE Id = %s"
+
+        cursor.execute(Select_Image % (imgId))
 
         data = cursor.fetchall()
 

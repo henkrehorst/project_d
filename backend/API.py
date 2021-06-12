@@ -34,6 +34,25 @@ class data(Resource):
 
         return jsonify(dic)
 
+class History(Resource):
+    def get(duneId):
+        data = db.getHistory(duneId)
+        
+        returnData = []
+
+        for line in data:
+            dic = {
+                "Id": line[0],
+                "Name": line[1],
+                "Link": line[2],
+                "TopCoordinate": [3],
+                "BottomCoordinate": line[4],
+                "DuneLocation": line[5]
+            }
+            returnData.append(dic)
+        return returnData
+
+
 class Algorithm(Resource):
     def post(self):
         data = request.get_json()
@@ -49,11 +68,24 @@ class Algorithm(Resource):
         thread.start()
 
         return imgId
-        
-        
 
-api.add_resource(Algorithm, "/algorithm")
+    def get(self, imgId):
+        data = db.getOneCal(imgId)
+
+        dic = {
+            "Id": data[0][0],
+            "Name": data[0][1],
+            "Link": data[0][2],
+            "TopCoordinate": data[0][3],
+            "BottomCoordinate": data[0][4],
+            "DuneLocation": data[0][5]
+        }
+
+        return jsonify(dic)
+        
 api.add_resource(data, "/data")
+api.add_resource(History, "/history/<int:duneId>")
+api.add_resource(Algorithm, "/algorithm")
 
 if __name__ == "__main__":
     app.run(debug=True)
