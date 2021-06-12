@@ -276,7 +276,7 @@ class TwoDimensionalXYZArray:
         return coordinates
 
     def addPoint(self, mauricePoint):
-        self.arr[mauricePoint.x-1, mauricePoint.y-1] = mauricePoint
+        self.arr[mauricePoint.x, mauricePoint.y] = mauricePoint
         return
 
     def fillEmptyArrayPoints(self):
@@ -327,7 +327,7 @@ def RunFilterOutput2DArray(xyzFile, workingFolder, left1x, left1y, left2x, left2
 
     for col in output2DArray.arr:
         for mp in col:
-            csvOutputArr[mp.x - 1, mp.y - 1] = float(mp.height)
+            csvOutputArr[mp.x, mp.y] = float(mp.height)
 
     #	csvOutputArr = numpy.rot90(csvOutputArr)
     # img = im.fromarray(csvOutputArr)
