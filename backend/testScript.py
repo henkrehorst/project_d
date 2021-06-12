@@ -3,6 +3,7 @@ import algo
 import squareMaker as sm
 import requests
 import json
+import makeImg
 
 # square = sm.makeSquare(52610.5,427702.5,52685.5,427284.5)
 
@@ -33,13 +34,15 @@ dic = {
         "y": 427284.5
     },
     "waterlevel" : 4,
-    "breedte" : 100,
+    "breedte" : 120,
     "locatie" : "goeree",
     "locatieId" : 1
 }
 
-data = json.dumps(dic)
+makeImg.Image(dic, "test")
 
-base = "http://127.0.0.1:5000/algorithm"
-res = requests.post(base, json=data)
-print(res)
+# data = json.dumps(dic)
+
+# base = "http://127.0.0.1:5000/algorithm"
+# res = requests.post(base, json=data)
+# print(res)

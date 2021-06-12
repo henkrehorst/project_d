@@ -67,7 +67,7 @@ class Edge:
         yModifier = point.y - edge.p1.y
         yValue = yModifier * (1 + abs(self.slope))
         yValue += self.p1.y
-        xValue = self.GetXForY(xValue)
+        xValue = self.GetXForY(yValue)
         # print((xValue, yValue))
         input()
         return (xValue, yValue)
@@ -131,7 +131,12 @@ class QuadrilateralFilter:
     # Gets width and height of a numpy array
     def getProportions(self):
         values = self.getMinMaxValues()
-        return [int(values[0] - values[1]), int(values[2] - values[3])]
+        yMaxDif = values[2] - int(values[2])
+        yDif = values[2] - values[3] -int(values[2] - values[3])
+        if yMaxDif + yDif > 1.5:
+            return [int(values[0] - values[1]), (int(values[2] - values[3])+1)]
+        else:
+            return [int(values[0] - values[1]), int(values[2] - values[3])]
 
 
 class TwoDimensionalXYZArrayStraight:
