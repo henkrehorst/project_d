@@ -131,12 +131,12 @@ class QuadrilateralFilter:
     # Gets width and height of a numpy array
     def getProportions(self):
         values = self.getMinMaxValues()
-        yMaxDif = values[2] - int(values[2])
-        yDif = values[2] - values[3] -int(values[2] - values[3])
-        if yMaxDif + yDif > 1:
-            return [int(values[0] - values[1]), (int(values[2] - values[3])+1)]
+        #yMaxDif = values[2] - int(values[2])
+        yMinDif = values[3] - int(values[3])
+        if yMinDif > 0 and yMinDif <= 0.5:
+            return [int(values[0] - values[1]), (math.ceil(values[2] - values[3])+1)]
         else:
-            return [int(values[0] - values[1]), int(values[2] - values[3])]
+            return [int(values[0] - values[1]), math.ceil(values[2] - values[3])]
 
 
 class TwoDimensionalXYZArrayStraight:
