@@ -42,11 +42,35 @@ def Image(data, name):
     tp = fc.RunFilterOutput2DArray(data["locatie"]+ ".xyz", './', l1.x, l1.y, l2.x, l2.y, r1.x, r1.y, r2.x, r2.y, startingPoints)
 
     #First make an array and then convert the array to an image
-    imgArr = algo.algorithm(tp[0], 4, tp[1])
+    imgArr = algo.algorithm(tp[0], data['waterlevel'], tp[1])
+    #
+    # for line in imgArr:
+    #     line.reverse()
+    #imgArr.reverse()
+    check1=data["punt_a"]["y"] < data["punt_b"]["y"] and tp[1][0]["y"] > tp[1][1]["y"]
+    check2=data["punt_a"]["y"] > data["punt_b"]["y"] and tp[1][0]["y"] > tp[1][1]["y"]
+    # check3=data["punt_a"]["x"] > data["punt_b"]["x"] and tp[1][0]["x"] > tp[1][1]["x"]
+    # check4=data["punt_a"]["x"] < data["punt_b"]["x"] and tp[1][0]["x"] < tp[1][1]["x"]
 
-    for line in imgArr:
-        line.reverse()
-        
+    if check1 or check2:
+        arrTemp = []
+        i = len(imgArr)-1
+        while i >= 0:
+            arrTemp.append(imgArr[i])
+            i -= 1
+        imgArr = arrTemp
+
+    # if check3 or check4:
+    #     arrTemp = []
+    #     for line in imgArr:
+    #         TempLine = []
+    #         i = len(line) -1
+    #         while i >= 0:
+    #             TempLine.append(line[i])
+    #             i -= 1
+    #         arrTemp.append(TempLine)
+    #     imgArr = arrTemp
+
     algo.makeImage(imgArr,name)
     
     minValues = MinValues([square["left1"]["x"],square["left2"]["x"],square["right1"]["x"],square["right2"]["x"]],[square["left1"]["y"],square["left2"]["y"],square["right1"]["y"],square["right2"]["y"]])
