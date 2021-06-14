@@ -1,10 +1,27 @@
 from squareMaker import makeSquare
 import filterCoords as fc
 import algo
+import convert_coordinates as cc
+
+def LowerLeft(xLine, yLine):
+    xmin = xLine[0]
+    ymin = yLine[0]
+
+    for x in xLine:
+        if x < xmin:
+            xmin = x
+    
+    for y in yLine:
+        if y < ymin:
+            ymin = y
+    return (xmin, ymin)
     
 def Image(data, name):
     #Make a square from the 2 given points
-    square = makeSquare(data["punt_a"]["x"],data["punt_a"]["y"],data["punt_b"]["x"],data["punt_b"]["y"],data["breedte"])
+    point1 = cc.convertWGS84toRD(data["punt_a"]["x"],data["punt_a"]["y"])
+    point2 = cc.convertWGS84toRD(data["punt_b"]["x"],data["punt_b"]["y"])
+
+    square = makeSquare(point1[0],point1[1],point2[0],point2[1],data["breedte"])
 
     #Convert lose coordinates to points
     l1 = fc.Point(square["left1"]["x"], square["left1"]["y"])
@@ -22,4 +39,10 @@ def Image(data, name):
     imgArr = algo.algorithm(tp[0], 4, tp[1][0])
     algo.makeImage(imgArr,name)
 
-    return (0,0) #ToDo: give here the corner points
+    lowLeft = LowerLeft([square["left1"]["x"],square["left2"]["x"],square["right1"]["x"],square["right2"]["x"]],[square["left1"]["y"],square["left2"]["y"],square["right1"]["y"],square["right2"]["y"]])
+    upperRight = (lowLeft[0]+len(imgArr[0]), lowLeft[1]+len(imgArr))
+
+    lowLeft = cc.convertRDtoWGS84(lowLeft[0],lowLeft[1])
+    upperRight = cc.convertRDtoWGS84(upperRight[0],upperRight[1])
+
+    return (lowLeft,upperRight) #ToDo: give here the corner points

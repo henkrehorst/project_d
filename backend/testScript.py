@@ -39,10 +39,12 @@ dic = {
     "locatieId" : 1
 }
 
-makeImg.Image(dic, "test")
+print(makeImg.Image(dic, "test"))
 
 # data = json.dumps(dic)
 
 # base = "http://127.0.0.1:5000/algorithm"
 # res = requests.post(base, json=data)
 # print(res)
+
+
