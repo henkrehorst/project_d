@@ -3,7 +3,7 @@ import filterCoords as fc
 import algo
 import convert_coordinates as cc
 
-def LowerLeft(xLine, yLine):
+def MinValues(xLine, yLine):
     xmin = xLine[0]
     ymin = yLine[0]
 
@@ -43,10 +43,16 @@ def Image(data, name):
 
     #First make an array and then convert the array to an image
     imgArr = algo.algorithm(tp[0], 4, tp[1])
-    algo.makeImage(imgArr,name)
 
-    lowLeft = LowerLeft([square["left1"]["x"],square["left2"]["x"],square["right1"]["x"],square["right2"]["x"]],[square["left1"]["y"],square["left2"]["y"],square["right1"]["y"],square["right2"]["y"]])
-    upperRight = (lowLeft[0]+len(imgArr[0]), lowLeft[1]+len(imgArr))
+    for line in imgArr:
+        line.reverse()
+        
+    algo.makeImage(imgArr,name)
+    
+    minValues = MinValues([square["left1"]["x"],square["left2"]["x"],square["right1"]["x"],square["right2"]["x"]],[square["left1"]["y"],square["left2"]["y"],square["right1"]["y"],square["right2"]["y"]])
+    
+    lowLeft = (minValues[0], minValues[1] + len(imgArr))
+    upperRight = (minValues[0]+len(imgArr[0]), minValues[1])
 
     lowLeft = cc.convertRDtoWGS84(lowLeft[0],lowLeft[1])
     upperRight = cc.convertRDtoWGS84(upperRight[0],upperRight[1])
