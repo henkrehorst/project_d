@@ -24,16 +24,22 @@ def Image(data, name):
     square = makeSquare(point1[0],point1[1],point2[0],point2[1],data["breedte"])
 
     #Convert lose coordinates to points
-    l1 = fc.Point(square["left1"]["x"], square["left1"]["y"])
-    l2 = fc.Point(square["left2"]["x"], square["left2"]["y"])
-    r1 = fc.Point(square["right1"]["x"], square["right1"]["y"])
-    r2 = fc.Point(square["right2"]["x"], square["right2"]["y"])
+    if square['left1']['y'] > square["left2"]["y"]:
+        l1 = fc.Point(square["left1"]["x"], square["left1"]["y"])
+        l2 = fc.Point(square["left2"]["x"], square["left2"]["y"])
+        r1 = fc.Point(square["right1"]["x"], square["right1"]["y"])
+        r2 = fc.Point(square["right2"]["x"], square["right2"]["y"])
+    else:
+        l2 = fc.Point(square["left1"]["x"], square["left1"]["y"])
+        l1 = fc.Point(square["left2"]["x"], square["left2"]["y"])
+        r2 = fc.Point(square["right1"]["x"], square["right1"]["y"])
+        r1 = fc.Point(square["right2"]["x"], square["right2"]["y"])
 
     #Create a tuple with the starting points
-    startingPoints = (fc.Point(data["punt_a"]["x"],data["punt_a"]["y"]), fc.Point(data["punt_b"]["x"],data["punt_b"]["y"]))
+    startingPoints = (fc.Point(point1[0],point1[1]), fc.Point(point2[0],point2[1]))
 
     #Get a tuple with starting points and the array with heights that are needed
-    tp = fc.RunFilterOutput2DArray(data["locatie"]+ ".xyz", '/home/azureuser/data/xyz/', l1.x, l1.y, l2.x, l2.y, r1.x, r1.y, r2.x, r2.y, startingPoints)
+    tp = fc.RunFilterOutput2DArray(data["locatie"]+ ".xyz", './', l1.x, l1.y, l2.x, l2.y, r1.x, r1.y, r2.x, r2.y, startingPoints)
 
     #First make an array and then convert the array to an image
     imgArr = algo.algorithm(tp[0], 4, tp[1][0])

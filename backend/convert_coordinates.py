@@ -19,7 +19,7 @@ def convertWGS84toRD(x, y):
 
     # Convert rd_new coordinate to wgs84
     res = wgs84_to_rd.TransformPoint(x, y)
-    return {'lat': math.floor(res[0]) + 0.5, 'lng': math.floor(res[1]) + 0.5}
+    return [math.floor(res[0]) + 0.5, math.floor(res[1]) + 0.5]
 
 
 def convertRDtoWGS84(x, y):
@@ -37,6 +37,6 @@ def convertRDtoWGS84(x, y):
 
     # Convert rd_new coordinate to wgs84
     res = rd_to_wgs84.TransformPoint(x, y)
-    return {'lat': res[0], 'lng': res[1]}
+    return [res[0], res[1]]
 
 
