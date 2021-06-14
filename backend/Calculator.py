@@ -1,6 +1,7 @@
 import makeImg
 import blobService
 import db
+from os import popen
 
 def Calculation(data, name, imgId):
     #Make image
@@ -13,6 +14,8 @@ def Calculation(data, name, imgId):
     #upload image to blob storage
     link = blobService.Upload(imgName)
     #ToDo: remove image after uploading
+    rmLine = 'rm ' + imgName + '.png'
+    popen(rmLine)
     #Update database
     a = db.updateAlgo(link, str(cornerpoints[0]), str(cornerpoints[1]), imgId)
     print(a)
