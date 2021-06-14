@@ -40,7 +40,7 @@ def algorithm(arr, waterLevel, startingPoint):
         startX = startingPoint[0]["x"]
         startY = startingPoint[0]["y"]
 
-        while arr[x,round(y)] == -9999:
+        while arr[startX,round(startY)] == -9999:
             startX += add
             startY += (slope*add)
         sp = [startX,startY]
