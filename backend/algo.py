@@ -26,8 +26,24 @@ def algorithm(arr, waterLevel, startingPoint):
 
     imgArray = [[-1 for x in range(len(arr))] for y in range(len(arr[0]))]
     ToCheck = []
-    sp = [startingPoint["x"],startingPoint["y"]]
+    sp = [startingPoint[0]["x"],startingPoint[0]["y"]]
     
+    if arr[sp[0],sp[1]] == -9999:
+        xdif = startingPoint[1]["x"] - startingPoint[0]["x"]
+        ydif = startingPoint[1]["y"] - startingPoint[0]["y"]
+        slope = ydif / xdif
+        if xdif < 0:
+            add = -1
+        else:
+            add = 1
+
+        startX = startingPoint[0]["x"]
+        startY = startingPoint[0]["y"]
+
+        while arr[x,round(y)] == -9999:
+            startX += add
+            startY += (slope*add)
+        sp = [startX,startY]
     ToCheck.append(sp)
 
     while len(ToCheck) > 0:

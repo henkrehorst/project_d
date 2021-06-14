@@ -6,11 +6,14 @@ def Upload(filename):
     container_name = "images"
     source_folder = "./"
 
+    #Set content type to png so it uploads the image as a png
     my_content_settings = ContentSettings(content_type='image/png')
     url = ""
     try:
         client_container = ContainerClient.from_connection_string(conn_str=azure_storage_connectionstring,container_name=container_name)
         blob = client_container.get_blob_client(filename)
+        
+        #If exits delete the existing 
         if blob.exists():
             blob.delete_blob()
 

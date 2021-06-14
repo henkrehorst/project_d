@@ -36,7 +36,7 @@ def Image(data, name):
     tp = fc.RunFilterOutput2DArray(data["locatie"]+ ".xyz", '/home/azureuser/data/xyz/', l1.x, l1.y, l2.x, l2.y, r1.x, r1.y, r2.x, r2.y, startingPoints)
 
     #First make an array and then convert the array to an image
-    imgArr = algo.algorithm(tp[0], 4, tp[1][0])
+    imgArr = algo.algorithm(tp[0], 4, tp[1])
     algo.makeImage(imgArr,name)
 
     lowLeft = LowerLeft([square["left1"]["x"],square["left2"]["x"],square["right1"]["x"],square["right2"]["x"]],[square["left1"]["y"],square["left2"]["y"],square["right1"]["y"],square["right2"]["y"]])
