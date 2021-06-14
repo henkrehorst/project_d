@@ -133,7 +133,7 @@ class QuadrilateralFilter:
         values = self.getMinMaxValues()
         yMaxDif = values[2] - int(values[2])
         yDif = values[2] - values[3] -int(values[2] - values[3])
-        if yMaxDif + yDif > 1.5:
+        if yMaxDif + yDif > 1:
             return [int(values[0] - values[1]), (int(values[2] - values[3])+1)]
         else:
             return [int(values[0] - values[1]), int(values[2] - values[3])]

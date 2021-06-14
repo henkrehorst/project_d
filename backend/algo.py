@@ -48,7 +48,7 @@ def algorithm(arr, waterLevel, startingPoint):
             if level != 0:
                 ToCheck.append([x+1,y])
             
-            #check under
+        #check under
         if y - 1 > 0 and imgArray[y-1][x] == -1:
             level = heightNumber(arr[x][y-1], waterLevel)
             imgArray[y-1][x] = level
@@ -61,6 +61,34 @@ def algorithm(arr, waterLevel, startingPoint):
             imgArray[y+1][x] = level
             if level != 0:
                 ToCheck.append([x,y+1])
+
+        #check left above
+        if y + 1 < len(arr[x]) and x-1 > 0 and imgArray[y+1][x-1] == -1:
+            level = heightNumber(arr[x-1][y+1], waterLevel)
+            imgArray[y+1][x-1] = level
+            if level != 0:
+                ToCheck.append([x-1,y+1])
+
+        #check right above
+        if y + 1 < len(arr[x]) and x + 1 < len(arr) and imgArray[y+1][x+1] == -1:
+            level = heightNumber(arr[x+1][y+1], waterLevel)
+            imgArray[y+1][x+1] = level
+            if level != 0:
+                ToCheck.append([x+1,y+1])
+
+        #check left under
+        if y - 1 > 0 and x - 1 > 0 and imgArray[y-1][x-1] == -1:
+            level = heightNumber(arr[x-1][y-1], waterLevel)
+            imgArray[y-1][x-1] = level
+            if level != 0:
+                ToCheck.append([x-1,y-1])
+        
+        #check right under
+        if y - 1 > 0 and x + 1 < len(arr) and imgArray[y-1][x+1] == -1:
+            level = heightNumber(arr[x+1][y-1], waterLevel)
+            imgArray[y-1][x+1] = level
+            if level != 0:
+                ToCheck.append([x+1,y-1])
         
         ToCheck.remove(ToCheck[0])
     return imgArray
