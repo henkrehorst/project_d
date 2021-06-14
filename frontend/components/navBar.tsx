@@ -15,7 +15,7 @@ import {
 import {MapSelection} from "./mapSelection";
 import {observer} from "mobx-react-lite";
 import {MapContext} from "../stores/mapStore";
-import {refreshMap} from "../services/googleMapsService";
+import {displayResultOverlay, refreshMap} from "../services/googleMapsService";
 
 
 export const NavBar = observer(() => {
@@ -60,8 +60,34 @@ export const NavBar = observer(() => {
             })
         }).then(response => {
             if (response.ok) {
-                response.text().then(reqId => {
-                    console.log(Number(reqId));
+                response.json().then((data: { imageid: number }) => {
+                    console.log(data.imageid);
+                    let interval = setInterval(() => {
+                        fetch(process.env.NEXT_PUBLIC_API_URL + 'image/' + data.imageid).then(res => {
+                            if (res.ok) {
+                                res.json().then((result: {
+                                    BottomCoordinate: string | null,
+                                    DuneLocation: number,
+                                    Id: number,
+                                    Link: string | null,
+                                    Name: string,
+                                    TopCoordinate: null
+                                }) => {
+                                    if (result.Link != null) {
+                                        console.log(result)
+                                        clearInterval(interval);
+                                        displayResultOverlay(
+                                            result.Link,
+                                            // @ts-ignore
+                                            {lat: Number(result.TopCoordinate.split(',')[0]), lng: Number(result.TopCoordinate.split(',')[1])},
+                                            // @ts-ignore
+                                            {lat: Number(result.BottomCoordinate.split(',')[0]), lng: Number(result.BottomCoordinate.split(',')[1])});
+                                        onClose();
+                                    }
+                                });
+                            }
+                        })
+                    }, 10000)
                 })
             }
         })
