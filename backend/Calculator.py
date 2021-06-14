@@ -17,5 +17,5 @@ def Calculation(data, name, imgId):
     rmLine = 'rm ' + imgName + '.png'
     popen(rmLine)
     #Update database
-    a = db.updateAlgo(link, str(cornerpoints[0]), str(cornerpoints[1]), imgId)
+    a = db.updateAlgo(link, str(cornerpoints[0][0]) + ","+str(cornerpoints[0][1]), str(cornerpoints[1][0]) + ","+str(cornerpoints[1][1]), imgId)
     print(a)
