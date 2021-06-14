@@ -6,6 +6,7 @@ export const MapContext = createContext<MapStore>(null);
 export class MapStore {
     status: 'selection' | 'confirm' |'calculation' | 'result';
     mapLocation: string;
+    locationId: number;
     centerPoint: { lat: number, lng: number };
     mapImageUpperRight: { lat: number, lng: number };
     mapImageLowerLeft: { lat: number, lng: number };
@@ -24,7 +25,8 @@ export class MapStore {
         mapSource: string,
         lowerLeft: { lat: number, lng: number },
         upperRight: { lat: number, lng: number },
-        center: { lat: number, lng: number }
+        center: { lat: number, lng: number },
+        id: number
     ) {
         makeAutoObservable(this)
         this.mapLocation =location;
@@ -37,6 +39,7 @@ export class MapStore {
         this.status = 'selection'
         this.height = 4;
         this.width = 100;
+        this.locationId = id;
         // @ts-ignore
     }
 
@@ -45,7 +48,8 @@ export class MapStore {
         mapSource: string,
         lowerLeft: { lat: number, lng: number },
         upperRight: { lat: number, lng: number },
-        center: { lat: number, lng: number }
+        center: { lat: number, lng: number },
+        id: number
     ) {
         this.mapLocation =location;
         this.mapImageSrc = mapSource;
@@ -56,6 +60,8 @@ export class MapStore {
         this.pointBExists = false;
         this.height = 4;
         this.width = 100;
+        this.locationId = id;
+        this.status = 'selection';
         // @ts-ignore
     }
 

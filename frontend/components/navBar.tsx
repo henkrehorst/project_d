@@ -8,7 +8,7 @@ import {
     ModalBody,
     ModalCloseButton, ModalContent,
     ModalFooter,
-    ModalHeader, ModalOverlay, Slider, SliderFilledTrack, SliderThumb, SliderTrack,
+    ModalHeader, ModalOverlay, Progress, Slider, SliderFilledTrack, SliderThumb, SliderTrack,
     Spacer, Text,
     useDisclosure
 } from "@chakra-ui/react";
@@ -29,12 +29,42 @@ export const NavBar = observer(() => {
         refreshMap(map);
     }
 
-    const changeHeight= (value: number) => {
+    const changeHeight = (value: number) => {
         map.setHeight(value);
     }
 
-    const changeWidth= (value: number) => {
+    const changeWidth = (value: number) => {
         map.setWidth(value);
+    }
+
+    const runCalculation = () => {
+        map.setStatus('calculation');
+        fetch(process.env.NEXT_PUBLIC_API_URL + 'algorithm', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                punt_a: {
+                    x: map.pointALat,
+                    y: map.pointALng
+                },
+                punt_b: {
+                    x: map.pointBLat,
+                    y: map.pointBLng
+                },
+                waterlevel: map.height,
+                breedte: map.width,
+                locatie: map.mapLocation,
+                locatieId: map.locationId
+            })
+        }).then(response => {
+            if (response.ok) {
+                response.text().then(reqId => {
+                    console.log(Number(reqId));
+                })
+            }
+        })
     }
 
     return (
@@ -48,8 +78,8 @@ export const NavBar = observer(() => {
             <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay/>
                 <ModalContent>
-                    <ModalHeader>Start berekening</ModalHeader>
-                    <ModalCloseButton/>
+                    <ModalHeader>{map.status === 'selection' ? 'Start berekening' : 'Berekening verwerken'}</ModalHeader>
+                    {map.status === 'selection' ? <ModalCloseButton/> : ''}
                     <ModalBody pb={6}>
                         {!map.pointAExists || !map.pointBExists ?
                             <Alert status="error">
@@ -57,33 +87,40 @@ export const NavBar = observer(() => {
                                 Selecteer eerst twee punten om het path finding algoritme tussen de twee punten te
                                 kunnen starten!
                             </Alert>
-                            : <>
-                                <Text>Klik op run calculation om het path finding algoritme tussen de twee geselecteerde punten te starten.</Text>
-                                <Text fontWeight={'bold'} marginTop={'20px'}>Hoogte: {map.height}</Text>
-                                <Slider defaultValue={map.height} onChange={changeHeight} min={1} max={15} step={1}>
-                                    <SliderTrack bg="blue.100">
-                                        <Box position="relative" right={10}/>
-                                        <SliderFilledTrack bg="blue.800"/>
-                                    </SliderTrack>
-                                    <SliderThumb boxSize={6}/>
-                                </Slider>
-                                <Text fontWeight={'bold'}>Breedte: {map.width}</Text>
-                                <Slider defaultValue={map.width} onChange={changeWidth} min={40} max={200} step={20}>
-                                    <SliderTrack bg="blue.100">
-                                        <Box position="relative" right={10}/>
-                                        <SliderFilledTrack bg="blue.800"/>
-                                    </SliderTrack>
-                                    <SliderThumb boxSize={6}/>
-                                </Slider>
-                            </>}
+                            : map.status === 'selection' ? <>
+                                    <Text>Klik op run calculation om het path finding algoritme tussen de twee geselecteerde
+                                        punten te starten.</Text>
+                                    <Text fontWeight={'bold'} marginTop={'20px'}>Hoogte: {map.height}</Text>
+                                    <Slider defaultValue={map.height} onChange={changeHeight} min={1} max={15} step={1}>
+                                        <SliderTrack bg="blue.100">
+                                            <Box position="relative" right={10}/>
+                                            <SliderFilledTrack bg="blue.800"/>
+                                        </SliderTrack>
+                                        <SliderThumb boxSize={6}/>
+                                    </Slider>
+                                    <Text fontWeight={'bold'}>Breedte: {map.width}</Text>
+                                    <Slider defaultValue={map.width} onChange={changeWidth} min={40} max={200} step={20}>
+                                        <SliderTrack bg="blue.100">
+                                            <Box position="relative" right={10}/>
+                                            <SliderFilledTrack bg="blue.800"/>
+                                        </SliderTrack>
+                                        <SliderThumb boxSize={6}/>
+                                    </Slider>
+                                </> :
+                                <>
+                                    <Text marginBottom={2}>Een ogenblik geduld de berekening wordt uitgevoerd.</Text>
+                                    <Progress size="sm" isIndeterminate/>
+                                </>}
                     </ModalBody>
                     <ModalFooter>
-                        {map.pointAExists && map.pointBExists ?
-                            <Button colorScheme="green" mr={3}>
-                                Run calculation
-                            </Button>
-                            : ''}
-                        <Button onClick={onClose}>Cancel</Button>
+                        {map.status === 'selection' ?
+                            map.pointAExists && map.pointBExists ?
+                                <Button colorScheme="green" mr={3} onClick={runCalculation}>
+                                    Run calculation
+                                </Button>
+                                : '' : ''}
+                        {map.status === 'selection' ?
+                            <Button onClick={onClose}>Cancel</Button> : ''}
                     </ModalFooter>
                 </ModalContent>
             </Modal>
