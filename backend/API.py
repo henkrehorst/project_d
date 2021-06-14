@@ -15,29 +15,29 @@ class data(Resource):
     def get(self):
         line = db.getData()
         dic = {
-            "loc1": {
-            "id": line[0][0],
-            "location": line[0][1],
-            "upperright": line[0][2],
-            "lowerleft": line[0][3],
-            "centercoordinate": line[0][4],
-            "link": line[0][5]},
-            "loc2": {
-            "id": line[1][0],
-            "location": line[1][1],
-            "upperright": line[1][2],
-            "lowerleft": line[1][3],
-            "centercoordinate": line[1][4],
-            "link": line[1][5]}
-            }
-        
+            line[0][0]: {
+                "id": line[0][0],
+                "location": line[0][1],
+                "upperright": line[0][2],
+                "lowerleft": line[0][3],
+                "centercoordinate": line[0][4],
+                "link": line[0][5]},
+            line[1][0]: {
+                "id": line[1][0],
+                "location": line[1][1],
+                "upperright": line[1][2],
+                "lowerleft": line[1][3],
+                "centercoordinate": line[1][4],
+                "link": line[1][5]}
+        }
 
         return jsonify(dic)
+
 
 class History(Resource):
     def get(duneId):
         data = db.getHistory(duneId)
-        
+
         returnData = []
 
         for line in data:
@@ -51,6 +51,7 @@ class History(Resource):
             }
             returnData.append(dic)
         return returnData
+
 
 class Image(Resource):
     def get(self, imgId):
@@ -67,6 +68,7 @@ class Image(Resource):
 
         return jsonify(dic)
 
+
 class Algorithm(Resource):
     def post(self):
         data = request.get_json()
@@ -76,13 +78,22 @@ class Algorithm(Resource):
 
         imgId = db.insertAlgo(data['locatieId'], name)
 
-        thread = Thread(target=Calculation, args=(data,name,imgId))
-        
+        thread = Thread(target=Calculation, args=(data, name, imgId))
+
         thread.daemon = True
         thread.start()
 
-        return imgId
-        
+        return jsonify({'imageid': imgId})
+
+
+@app.after_request
+def disableCors(response):
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
+    return response
+
+
 api.add_resource(data, "/data")
 api.add_resource(History, "/history/<int:duneId>")
 api.add_resource(Image, "/image/<int:imgId>")
@@ -90,4 +101,3 @@ api.add_resource(Algorithm, "/algorithm")
 
 if __name__ == "__main__":
     app.run(debug=True)
-
