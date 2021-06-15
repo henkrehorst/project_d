@@ -45,37 +45,15 @@ def Image(data, name):
     imgArr = algo.algorithm(tp[0], data['waterlevel'], tp[1])
     
     minValues = MinValues([square["left1"]["x"],square["left2"]["x"],square["right1"]["x"],square["right2"]["x"]],[square["left1"]["y"],square["left2"]["y"],square["right1"]["y"],square["right2"]["y"]])
-    
-    lowLeft = (minValues[0], minValues[1] + len(imgArr))
-    upperRight = (minValues[0]+len(imgArr[0]), minValues[1])
 
-
-    check1=data["punt_a"]["y"] < data["punt_b"]["y"] and tp[1][0]["y"] > tp[1][1]["y"]
-    check2=data["punt_a"]["y"] > data["punt_b"]["y"] and tp[1][0]["y"] > tp[1][1]["y"]
-
-    if check1 or check2:
-        arrTemp = []
-        i = len(imgArr)-1
-        while i >= 0:
-            arrTemp.append(imgArr[i])
-            i -= 1
-        imgArr = arrTemp
-        lowLeft = (minValues[0], minValues[1])
-        upperRight = (minValues[0]+len(imgArr[0]), minValues[1] + len(imgArr))
-
-    # check3=data["punt_a"]["x"] > data["punt_b"]["x"] and tp[1][0]["x"] > tp[1][1]["x"]
-    # check4=data["punt_a"]["x"] < data["punt_b"]["x"] and tp[1][0]["x"] < tp[1][1]["x"]
-    
-    # if check3 or check4:
-    #     arrTemp = []
-    #     for line in imgArr:
-    #         TempLine = []
-    #         i = len(line) -1
-    #         while i >= 0:
-    #             TempLine.append(line[i])
-    #             i -= 1
-    #         arrTemp.append(TempLine)
-    #     imgArr = arrTemp
+    arrTemp = []
+    i = len(imgArr)-1
+    while i >= 0:
+        arrTemp.append(imgArr[i])
+        i -= 1
+    imgArr = arrTemp
+    lowLeft = (minValues[0], minValues[1])
+    upperRight = (minValues[0]+len(imgArr[0]), minValues[1] + len(imgArr))
 
     algo.makeImage(imgArr,name)
     
