@@ -68,7 +68,6 @@ class Edge:
         yValue = yModifier * (1 + abs(self.slope))
         yValue += self.p1.y
         xValue = self.GetXForY(yValue)
-        # print((xValue, yValue))
         input()
         return (xValue, yValue)
 
@@ -88,12 +87,6 @@ class QuadrilateralFilter:
 
     # Takes point as input, returns True if it appears in this rectangle
     def withinQuadrilateral(self, p):
-        # print(p.x, p.y)
-        # print(self.topEdge.GetYForX(p.x))
-        # print(self.bottomEdge.GetYForX(p.x))
-        # print(self.leftEdge.GetXForY(p.y))
-        # print(self.rightEdge.GetXForY(p.x))
-        # print()
         if self.topEdge.GetYForX(p.x) < p.y:
             return False
         if self.bottomEdge.GetYForX(p.x) > p.y:
@@ -131,7 +124,6 @@ class QuadrilateralFilter:
     # Gets width and height of a numpy array
     def getProportions(self):
         values = self.getMinMaxValues()
-        #yMaxDif = values[2] - int(values[2])
         yMinDif = values[3] - int(values[3])
         if yMinDif > 0 and yMinDif <= 0.5:
             return [int(values[0] - values[1]), (math.ceil(values[2] - values[3])+1)]
@@ -175,7 +167,6 @@ class TwoDimensionalXYZArrayStraight:
             width = self.QFilter.left1.x - point.x
 
         YOffset = (math.sqrt(height ** 2 + width ** 2)) - height
-        # print(height, width, YOffset)
 
         return (XOffset, YOffset)
 
@@ -206,18 +197,12 @@ class TwoDimensionalXYZArrayStraight:
                     y = float(val)
                 if i % 3 == 0:
                     point = Point(x, y, val)
-                    # print(point.x, point.y, point.height)
                     if self.QFilter.withinQuadrilateral(point):
                         points += 1
                         realCoords = self.calculateOffsetFromPoint(point)
 
                         if bool(self.arr[int(round(realCoords[0] - 1)), int(round(realCoords[1] - 1))]) != False:
                             colisions += 1
-                        # 	print("COLLISION!")
-                        # 	print(self.arr[int(round(realCoords[0]-1)), int(round(realCoords[1]-1))], bool(self.arr[int(round(realCoords[0]-1)), int(round(realCoords[1]-1))]))
-                        # else:
-                        # 	print("NO COLLISION")
-                        # 	print(self.arr[int(round(realCoords[0]-1)), int(round(realCoords[1]-1))], bool(self.arr[int(round(realCoords[0]-1)), int(round(realCoords[1]-1))]))
 
                         self.arr[int(round(realCoords[0] - 1)), int(round(realCoords[1] - 1))] = point.height
         print("Filled array succesfully")
@@ -244,7 +229,6 @@ class XYZFileHandler:
                     height = val
                     tempPoint = Point(x, y, height)
                     pointList.append(tempPoint)
-        # print(pointList[0].x, pointList[0].y)
         return pointList
 
 
@@ -288,8 +272,6 @@ class TwoDimensionalXYZArray:
         for x in range(0, self.arr.shape[0]):
             for y in range(0, self.arr.shape[1]):
                 if self.arr[x, y] == None:
-                    # if self.indexToSeaPoint((x,y)):
-                    # 	self.arr[x,y] # GA  VERDER
                     self.arr[x, y] = MauricePoint(-9999, 0, 0, x, y, False)
 
 
@@ -323,8 +305,6 @@ def RunFilterOutput2DArray(xyzFile, workingFolder, left1x, left1y, left2x, left2
                 if qFilter.withinQuadrilateral(tempPoint):
                     indexValues = output2DArray.coordinateToIndex(tempPoint)
                     tempMauricePoint = MauricePoint(val, x, y, indexValues["x"], indexValues["y"], True)
-                    # if bool(output2DArray.arr[tempMauricePoint.x, tempMauricePoint.y]) != False:
-                    # 	colisions += 1
                     output2DArray.addPoint(tempMauricePoint)
 
     output2DArray.fillEmptyArrayPoints()
@@ -333,11 +313,5 @@ def RunFilterOutput2DArray(xyzFile, workingFolder, left1x, left1y, left2x, left2
     for col in output2DArray.arr:
         for mp in col:
             csvOutputArr[mp.x, mp.y] = float(mp.height)
-
-    #	csvOutputArr = numpy.rot90(csvOutputArr)
-    # img = im.fromarray(csvOutputArr)
-    # if img.mode != 'RGB':
-    #     img = img.convert('RGB')
-    # img.save('testimg.png')
 
     return csvOutputArr, startingIndexes
