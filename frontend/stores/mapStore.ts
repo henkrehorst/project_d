@@ -90,6 +90,11 @@ export class MapStore {
         this.pointBExists = true;
     }
 
+    disablePoints(){
+        this.pointAExists = false;
+        this.pointBExists = false;
+    }
+
     setHeight(val: number){
         this.height = val;
     }

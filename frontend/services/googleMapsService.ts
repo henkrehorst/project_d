@@ -1,6 +1,5 @@
 import {Loader} from "@googlemaps/js-api-loader";
 import {MapStore} from "../stores/mapStore";
-import {observer} from "mobx-react-lite";
 
 const loader = new Loader({
     apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAP_KEY,
@@ -275,6 +274,10 @@ export const displayResultOverlay = (source: string, lowerLeft: latLng, upperRig
         }
     }
 
+    if(resultOverlay != null){
+        resultOverlay.setMap(null)
+    }
+
     // @ts-ignore
     resultOverlay = new GoogleMapsCustomOverlay(lowerLeft, upperRight, source);
 
@@ -287,4 +290,16 @@ export const addMarker = (x, y) => {
         map,
         title: "click to remove"
     });
+}
+
+export const removeMarkers = () => {
+    //remove all markers on map
+    for (let i = 0; i < markers.length; i++) {
+        markers[i].setMap(null);
+    }
+}
+
+export const goTo = (zoom: number, position: latLng) => {
+    map.setZoom(zoom);
+    map.setCenter(position);
 }

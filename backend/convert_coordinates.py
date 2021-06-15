@@ -39,4 +39,3 @@ def convertRDtoWGS84(x, y):
     res = rd_to_wgs84.TransformPoint(x, y)
     return [res[0], res[1]]
 
-

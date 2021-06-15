@@ -40,11 +40,11 @@ export const HistoryView = observer(() => {
 
     return (
         <>
-            <Text fontWeight={'bold'}>Recente berekeningen</Text>
+            <Text fontWeight={'bold'} marginBottom={2}>Calculation history</Text>
             {historyData.status === 'loading' ?
                 <Center marginTop={'30px'}>
                     <Spinner/>
-                </Center> : historyData.data.length <= 0 ? <Text>Geen recente berekeningen gevonden</Text> :
+                </Center> : historyData.data.length <= 0 ? <Text>Calculation history not found</Text> :
                     historyData.data.map(item =>
                         <HistoryItem
                             key={item.Id}

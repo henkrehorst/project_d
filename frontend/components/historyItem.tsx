@@ -1,5 +1,8 @@
-import {FunctionComponent} from "react";
-import {Text} from "@chakra-ui/react";
+import {FunctionComponent, useContext} from "react";
+import {Button, Link, Text} from "@chakra-ui/react";
+import {observer} from "mobx-react-lite";
+import {MapContext} from "../stores/mapStore";
+import {displayResultOverlay, goTo, removeMarkers} from "../services/googleMapsService";
 
 interface HistoryItemProps {
     id: number,
@@ -10,9 +13,17 @@ interface HistoryItemProps {
     duneLocation: number
 }
 
-export const HistoryItem: FunctionComponent<HistoryItemProps> = ({id,name,source,upperRight,lowerLeft,duneLocation}) => {
+export const HistoryItem = observer<HistoryItemProps>(({id,name,source,upperRight,lowerLeft,duneLocation}) => {
+    const map = useContext(MapContext);
+
+    const itemClick = () => {
+        displayResultOverlay(source, lowerLeft, upperRight);
+        removeMarkers();
+        map.disablePoints();
+        map.setStatus('result');
+        goTo(16, upperRight);
+    }
+
     return (
-  <>
-    <Text>{name}</Text>
-  </>
-)};
+    <Button marginBottom={2} marginTop={2} w={'100%'} as={'button'} bg={'white'} onClick={itemClick}>{name}</Button>
+)})

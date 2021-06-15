@@ -79,10 +79,20 @@ export const NavBar = observer(() => {
                                         displayResultOverlay(
                                             result.Link,
                                             // @ts-ignore
-                                            {lat: Number(result.TopCoordinate.split(',')[0]), lng: Number(result.TopCoordinate.split(',')[1])},
+                                            {
+                                                // @ts-ignore
+                                                lat: Number(result.TopCoordinate.split(',')[0]),
+                                                // @ts-ignore
+                                                lng: Number(result.TopCoordinate.split(',')[1])
+                                            },
                                             // @ts-ignore
-                                            {lat: Number(result.BottomCoordinate.split(',')[0]), lng: Number(result.BottomCoordinate.split(',')[1])});
+                                            {
+                                                lat: Number(result.BottomCoordinate.split(',')[0]),
+                                                lng: Number(result.BottomCoordinate.split(',')[1])
+                                            });
                                         onClose();
+                                        map.setHistory(true);
+                                        map.setStatus('result');
                                     }
                                 });
                             }
@@ -97,14 +107,15 @@ export const NavBar = observer(() => {
         <>
             <Flex backgroundColor={"blue.600"} w={'100%'} p={4} h={'72px'}>
                 <MapSelection/>
-                <Button marginLeft={'20px'} onClick={onOpen} colorScheme="green">Start berekening</Button>
+                {map.status != 'result' ?
+                    <Button marginLeft={'20px'} onClick={onOpen} colorScheme="green">New Calculation</Button> : ''}
                 <Spacer/>
                 <Button colorScheme="red" onClick={onClearClick}>Clear</Button>
             </Flex>
             <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay/>
                 <ModalContent>
-                    <ModalHeader>{map.status === 'selection' ? 'Start berekening' : 'Berekening verwerken'}</ModalHeader>
+                    <ModalHeader>{map.status === 'selection' ? 'Start Calculation' : 'Running Calculation'}</ModalHeader>
                     {map.status === 'selection' ? <ModalCloseButton/> : ''}
                     <ModalBody pb={6}>
                         {!map.pointAExists || !map.pointBExists ?
@@ -116,15 +127,15 @@ export const NavBar = observer(() => {
                             : map.status === 'selection' ? <>
                                     <Text>Klik op run calculation om het path finding algoritme tussen de twee geselecteerde
                                         punten te starten.</Text>
-                                    <Text fontWeight={'bold'} marginTop={'20px'}>Hoogte: {map.height}</Text>
-                                    <Slider defaultValue={map.height} onChange={changeHeight} min={1} max={15} step={1}>
+                                    <Text fontWeight={'bold'} marginTop={'20px'}>Water level: {map.height}</Text>
+                                    <Slider defaultValue={map.height} onChange={changeHeight} min={3} max={15} step={1}>
                                         <SliderTrack bg="blue.100">
                                             <Box position="relative" right={10}/>
                                             <SliderFilledTrack bg="blue.800"/>
                                         </SliderTrack>
                                         <SliderThumb boxSize={6}/>
                                     </Slider>
-                                    <Text fontWeight={'bold'}>Breedte: {map.width}</Text>
+                                    <Text fontWeight={'bold'}>Width calculation area: {map.width}</Text>
                                     <Slider defaultValue={map.width} onChange={changeWidth} min={40} max={200} step={20}>
                                         <SliderTrack bg="blue.100">
                                             <Box position="relative" right={10}/>
