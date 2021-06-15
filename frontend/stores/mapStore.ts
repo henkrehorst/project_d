@@ -91,8 +91,8 @@ export class MapStore {
     }
 
     disablePoints(){
-        this.pointAExists = false;
-        this.pointBExists = false;
+        this.pointAExists = true;
+        this.pointBExists = true;
     }
 
     setHeight(val: number){
