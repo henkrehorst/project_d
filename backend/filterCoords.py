@@ -1,4 +1,4 @@
-#!/bin/python3
+    A#!/bin/python3
 import csv
 import numpy
 import math
@@ -48,7 +48,7 @@ class Edge:
         moveX = diffY / self.CalculateSlope()
         return moveX + self.p1.x
 
-    # calculates intersection point of line 90 degrees from this edge of a given point
+    # calculates inDtersection point of line 90 degrees from this edge of a given point
     # Takes as input the corner edge
     # ONLY WORKS FROM THE BOTTOM EDGE
     # GIVE LEFT EDGE AS INPUT
@@ -131,107 +131,6 @@ class QuadrilateralFilter:
             return [int(values[0] - values[1]), math.ceil(values[2] - values[3])]
 
 
-class TwoDimensionalXYZArrayStraight:
-    def __init__(self, QFilter, xyzFile):
-        self.QFilter = QFilter
-        self.arr = self.createArray()
-        self.fillArray(xyzFile)
-
-    # Calculate the offset of the right corner
-    # Using pythagoras
-    def calculateOffsetFromPoint(self, point):
-        # Calculate the height value of the right corner
-        if point.y > self.QFilter.left2.y:
-            height = point.y - self.QFilter.left2.y
-        else:
-            height = self.QFilter.left2.y - point.y
-
-        # Calculate the width value
-        if point.x > self.QFilter.left2.x:
-            width = point.x - self.QFilter.left2.x
-        else:
-            width = self.QFilter.left2.x - point.x
-
-        # Calculate the X Offset using pythagoras
-        XOffset = (math.sqrt(height ** 2 + width ** 2)) - width
-
-        if point.y > self.QFilter.left1.y:
-            height = point.y - self.QFilter.left1.y
-        else:
-            height = self.QFilter.left1.y - point.y
-
-        # Calculate the width value
-        if point.x > self.QFilter.left1.x:
-            width = point.x - self.QFilter.left1.x
-        else:
-            width = self.QFilter.left1.x - point.x
-
-        YOffset = (math.sqrt(height ** 2 + width ** 2)) - height
-
-        return (XOffset, YOffset)
-
-    # Creates an empty numpy 2D array with the length and width of the edges
-    def createArray(self):
-        # Calculates X and Y proportions for the array
-        proportions = {
-            "x": self.QFilter.bottomEdge.CalculateLength(),
-            "y": self.QFilter.rightEdge.CalculateLength()
-        }
-        return numpy.empty((int(proportions["x"]), int(proportions["y"])), dtype=float)
-
-    # Fills the array with the values inside of the .xyz file
-    def fillArray(self, xyzFile):
-        # calculate length from given point in pointlist to its edge
-        xyzFileHandle = open(xyzFile, 'r')
-        # Implement xyzFile class here
-        i = 0
-        points = 0
-        colisions = 0
-        print("Parsing through XYZ file...")
-        for line in xyzFileHandle:
-            for val in line.strip().split(" "):
-                i += 1
-                if i % 3 == 1:
-                    x = float(val)
-                if i % 3 == 2:
-                    y = float(val)
-                if i % 3 == 0:
-                    point = Point(x, y, val)
-                    if self.QFilter.withinQuadrilateral(point):
-                        points += 1
-                        realCoords = self.calculateOffsetFromPoint(point)
-
-                        if bool(self.arr[int(round(realCoords[0] - 1)), int(round(realCoords[1] - 1))]) != False:
-                            colisions += 1
-
-                        self.arr[int(round(realCoords[0] - 1)), int(round(realCoords[1] - 1))] = point.height
-        print("Filled array succesfully")
-        print("Writing text file..")
-        numpy.savetxt("arr.csv", self.arr, delimiter=",")
-        print("Written with", colisions, "collisions and ", points, "points")
-
-
-class XYZFileHandler:
-    def __init__(self, xyzFile):
-        self.xyzFileHandle = open(xyzFile, 'r')
-
-    def getPointList(self):
-        pointList = []
-        i = 0
-        for line in self.xyzFileHandle:
-            for val in line.strip().split(" "):
-                i += 1
-                if i % 3 == 1:
-                    x = float(val)
-                if i % 3 == 2:
-                    y = float(val)
-                if i % 3 == 0:
-                    height = val
-                    tempPoint = Point(x, y, height)
-                    pointList.append(tempPoint)
-        return pointList
-
-
 # x and y is the array position, realx and realy are the actual coordinates from the xyz file
 class MauricePoint:
     def __init__(self, height, realx, realy, x, y, isPoint):
@@ -257,11 +156,6 @@ class TwoDimensionalXYZArray:
             "x": int(point.x - minMaxValues[1]),
             "y": int(point.y - minMaxValues[3])
         }
-        return coordinates
-
-    def indexToSeaPoint(self, coordinates):
-        minMaxValues = self.QFilter.getMinMaxValues()
-        newPoint = Point(coordinates[0] + minMaxValues[1], coordinates[1] + minMaxValues[3])
         return coordinates
 
     def addPoint(self, mauricePoint):
