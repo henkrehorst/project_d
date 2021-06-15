@@ -43,14 +43,15 @@ def Image(data, name):
 
     #First make an array and then convert the array to an image
     imgArr = algo.algorithm(tp[0], data['waterlevel'], tp[1])
-    #
-    # for line in imgArr:
-    #     line.reverse()
-    #imgArr.reverse()
+    
+    minValues = MinValues([square["left1"]["x"],square["left2"]["x"],square["right1"]["x"],square["right2"]["x"]],[square["left1"]["y"],square["left2"]["y"],square["right1"]["y"],square["right2"]["y"]])
+    
+    lowLeft = (minValues[0], minValues[1] + len(imgArr))
+    upperRight = (minValues[0]+len(imgArr[0]), minValues[1])
+
+
     check1=data["punt_a"]["y"] < data["punt_b"]["y"] and tp[1][0]["y"] > tp[1][1]["y"]
     check2=data["punt_a"]["y"] > data["punt_b"]["y"] and tp[1][0]["y"] > tp[1][1]["y"]
-    # check3=data["punt_a"]["x"] > data["punt_b"]["x"] and tp[1][0]["x"] > tp[1][1]["x"]
-    # check4=data["punt_a"]["x"] < data["punt_b"]["x"] and tp[1][0]["x"] < tp[1][1]["x"]
 
     if check1 or check2:
         arrTemp = []
@@ -59,7 +60,12 @@ def Image(data, name):
             arrTemp.append(imgArr[i])
             i -= 1
         imgArr = arrTemp
+        lowLeft = (minValues[0], minValues[1])
+        upperRight = (minValues[0]+len(imgArr[0]), minValues[1] + len(imgArr))
 
+    # check3=data["punt_a"]["x"] > data["punt_b"]["x"] and tp[1][0]["x"] > tp[1][1]["x"]
+    # check4=data["punt_a"]["x"] < data["punt_b"]["x"] and tp[1][0]["x"] < tp[1][1]["x"]
+    
     # if check3 or check4:
     #     arrTemp = []
     #     for line in imgArr:
@@ -73,11 +79,6 @@ def Image(data, name):
 
     algo.makeImage(imgArr,name)
     
-    minValues = MinValues([square["left1"]["x"],square["left2"]["x"],square["right1"]["x"],square["right2"]["x"]],[square["left1"]["y"],square["left2"]["y"],square["right1"]["y"],square["right2"]["y"]])
-    
-    lowLeft = (minValues[0], minValues[1] + len(imgArr))
-    upperRight = (minValues[0]+len(imgArr[0]), minValues[1])
-
     lowLeft = cc.convertRDtoWGS84(lowLeft[0],lowLeft[1])
     upperRight = cc.convertRDtoWGS84(upperRight[0],upperRight[1])
 
