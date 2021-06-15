@@ -16,7 +16,7 @@ qF = fc.QuadrilateralFilter(l1, l2, r1, r2)
 tp = fc.RunFilterOutput2DArray('goeree.xyz', './', l1.x, l1.y, l2.x, l2.y, r1.x, r1.y, r2.x, r2.y, startingPoints)
 
 print("starting algo")
-imgArr = algo.algorithm(tp[0], 4, tp[1][0])
+imgArr = algo.algorithm(tp[0], 4, tp[1])
 
 algo.makeImage(imgArr, "test200")
 
