@@ -16,6 +16,7 @@ import {MapSelection} from "./mapSelection";
 import {observer} from "mobx-react-lite";
 import {MapContext} from "../stores/mapStore";
 import {displayResultOverlay, refreshMap} from "../services/googleMapsService";
+import {Legend} from "./legend";
 
 
 export const NavBar = observer(() => {
@@ -56,7 +57,8 @@ export const NavBar = observer(() => {
                 waterlevel: map.height,
                 breedte: map.width,
                 locatie: map.mapLocation,
-                locatieId: map.locationId
+                locatieId: map.locationId,
+                waterLevel: map.height
             })
         }).then(response => {
             if (response.ok) {
@@ -71,7 +73,8 @@ export const NavBar = observer(() => {
                                     Id: number,
                                     Link: string | null,
                                     Name: string,
-                                    TopCoordinate: null
+                                    TopCoordinate: null,
+                                    WaterLevel: number
                                 }) => {
                                     if (result.Link != null) {
                                         console.log(result)
@@ -108,7 +111,7 @@ export const NavBar = observer(() => {
             <Flex backgroundColor={"blue.600"} w={'100%'} p={4} h={'72px'}>
                 <MapSelection/>
                 {map.status != 'result' ?
-                    <Button marginLeft={'20px'} onClick={onOpen} colorScheme="green">New Calculation</Button> : ''}
+                    <Button marginLeft={'20px'} onClick={onOpen} colorScheme="green">New Calculation</Button> : <Legend/>}
                 <Spacer/>
                 <Button colorScheme="red" onClick={onClearClick}>Clear</Button>
             </Flex>
@@ -121,12 +124,12 @@ export const NavBar = observer(() => {
                         {!map.pointAExists || !map.pointBExists ?
                             <Alert status="error">
                                 <AlertIcon/>
-                                Selecteer eerst twee punten om het path finding algoritme tussen de twee punten te
-                                kunnen starten!
+                                Select two points before starting the path finding algorithm!
                             </Alert>
                             : map.status === 'selection' ? <>
-                                    <Text>Klik op run calculation om het path finding algoritme tussen de twee geselecteerde
-                                        punten te starten.</Text>
+                                    <Text>
+                                        Click on ‘Run calculation’ to start the path finding algorithm.
+                                    </Text>
                                     <Text fontWeight={'bold'} marginTop={'20px'}>Water level: {map.height}</Text>
                                     <Slider defaultValue={map.height} onChange={changeHeight} min={3} max={15} step={1}>
                                         <SliderTrack bg="blue.100">
@@ -145,7 +148,7 @@ export const NavBar = observer(() => {
                                     </Slider>
                                 </> :
                                 <>
-                                    <Text marginBottom={2}>Een ogenblik geduld de berekening wordt uitgevoerd.</Text>
+                                    <Text marginBottom={2}>Please wait a moment, the calculation is in progress.</Text>
                                     <Progress size="sm" isIndeterminate/>
                                 </>}
                     </ModalBody>

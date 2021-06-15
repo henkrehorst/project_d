@@ -11,7 +11,8 @@ type resItem = {
     Link: string,
     TopCoordinate: string,
     BottomCoordinate: string,
-    DuneLocation: number
+    DuneLocation: number,
+    WaterLevel: number
 }
 
 type stateProps = {
@@ -60,6 +61,7 @@ export const HistoryView = observer(() => {
                                 lng: Number(item.TopCoordinate.split(',')[1])
                             }}
                             duneLocation={item.DuneLocation}
+                            waterLevel={item.WaterLevel}
                         />
                     )
             }
