@@ -2,14 +2,14 @@ import mysql.connector
 from mysql.connector import errorcode
 
 
-def insertAlgo(duneId, name):
+def insertAlgo(duneId, name, waterLevel):
     try:
         mydb = mysql.connector.connect(user="root", password="root", host="localhost", database="project_d")
         cursor = mydb.cursor()
 
-        Insert_Img = "INSERT INTO algorithmimage (Name, DuneLocation) VALUES(%s,%s)"
+        Insert_Img = "INSERT INTO algorithmimage (Name, DuneLocation, WaterLevel) VALUES(%s,%s,%s)"
 
-        cursor.execute(Insert_Img, (name, duneId))
+        cursor.execute(Insert_Img, (name, duneId, waterLevel))
         mydb.commit()
 
         Id_Inserted = cursor.lastrowid

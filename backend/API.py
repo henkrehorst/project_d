@@ -47,7 +47,8 @@ class History(Resource):
                 "Link": line[2],
                 "TopCoordinate": line[3],
                 "BottomCoordinate": line[4],
-                "DuneLocation": line[5]
+                "DuneLocation": line[5],
+                "WaterLevel": line[6]
             }
             returnData.append(dic)
         return returnData
@@ -63,7 +64,8 @@ class Image(Resource):
             "Link": data[0][2],
             "TopCoordinate": data[0][3],
             "BottomCoordinate": data[0][4],
-            "DuneLocation": data[0][5]
+            "DuneLocation": data[0][5],
+            "WaterLevel": data[0][6]
         }
 
         return jsonify(dic)
@@ -76,7 +78,7 @@ class Algorithm(Resource):
         dt = datetime.datetime.now().strftime("%d/%m/%Y %H:%M:%S")
         name = str(data["locatie"]) + " " + dt
 
-        imgId = db.insertAlgo(data['locatieId'], name)
+        imgId = db.insertAlgo(data['locatieId'], name, data['waterLevel'])
 
         thread = Thread(target=Calculation, args=(data, name, imgId))
 
