@@ -35,7 +35,7 @@ class data(Resource):
 
 
 class History(Resource):
-    def get(duneId):
+    def get(self, duneId):
         data = db.getHistory(duneId)
 
         returnData = []
@@ -45,7 +45,7 @@ class History(Resource):
                 "Id": line[0],
                 "Name": line[1],
                 "Link": line[2],
-                "TopCoordinate": [3],
+                "TopCoordinate": line[3],
                 "BottomCoordinate": line[4],
                 "DuneLocation": line[5]
             }

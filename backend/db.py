@@ -80,7 +80,7 @@ def getHistory(duneId):
         mydb = mysql.connector.connect(user="root", password="root", host="localhost", database="project_d")
         cursor = mydb.cursor()
 
-        Select_History = "SELECT * FROM algorithmimage WHERE DuneLocation = %s"
+        Select_History = "SELECT * FROM algorithmimage WHERE DuneLocation = %s and Link is not null"
 
         cursor.execute(Select_History % (duneId))
 
