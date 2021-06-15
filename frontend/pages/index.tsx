@@ -12,7 +12,7 @@ const Page: NextPage<PageProps> = () => {
         <>
             <NavBar/>
             <Flex color={'black'}>
-                <Box w={'300px'} p={4} h={'calc(100vh - 72px)'} bg={'gray.100'}>
+                <Box w={'300px'} overflow={'auto'} p={4} h={'calc(100vh - 72px)'} bg={'gray.100'}>
                     <HistoryView/>
                 </Box>
                 <Box flex={1}>

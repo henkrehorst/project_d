@@ -19,6 +19,7 @@ export class MapStore {
     pointBLng: number;
     height: number;
     width: number;
+    reloadHistory: boolean;
 
     constructor(
         location: string,
@@ -40,6 +41,7 @@ export class MapStore {
         this.height = 4;
         this.width = 100;
         this.locationId = id;
+        this.reloadHistory = true;
         // @ts-ignore
     }
 
@@ -62,7 +64,12 @@ export class MapStore {
         this.width = 100;
         this.locationId = id;
         this.status = 'selection';
+        this.reloadHistory = true;
         // @ts-ignore
+    }
+
+    setHistory(val: boolean){
+        this.reloadHistory = val;
     }
 
     setPointA(lat: number, lng: number){

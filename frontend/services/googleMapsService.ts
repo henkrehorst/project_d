@@ -128,7 +128,6 @@ export const initMap = (id: string, mapStore: MapStore): void => {
 };
 
 
-
 export const refreshMap = (store: MapStore) => {
     map.setCenter(store.centerPoint);
     map.setZoom(13);
@@ -138,7 +137,7 @@ export const refreshMap = (store: MapStore) => {
     }
     overlay.setMap(null);
 
-    if(resultOverlay != null){
+    if (resultOverlay != null) {
         resultOverlay.setMap(null);
     }
 
@@ -282,4 +281,10 @@ export const displayResultOverlay = (source: string, lowerLeft: latLng, upperRig
     resultOverlay.setMap(map);
 }
 
-
+export const addMarker = (x, y) => {
+    new google.maps.Marker({
+        position:{ lat: Number(x), lng: Number(y) },
+        map,
+        title: "click to remove"
+    });
+}

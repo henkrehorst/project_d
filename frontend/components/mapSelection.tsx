@@ -3,7 +3,7 @@ import {Box, Button, Menu, MenuButton, MenuItem, MenuList, Select} from "@chakra
 import {ChevronDownIcon} from "@chakra-ui/icons";
 import {observer} from "mobx-react-lite";
 import {MapContext} from "../stores/mapStore";
-import {refreshMap} from "../services/googleMapsService";
+import {addMarker, refreshMap} from "../services/googleMapsService";
 
 type stateProps = {
     status: 'loading' | 'ready',
