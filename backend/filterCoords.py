@@ -1,4 +1,4 @@
-    A#!/bin/python3
+#!/bin/python3
 import csv
 import numpy
 import math
