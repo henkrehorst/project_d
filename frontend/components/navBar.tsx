@@ -17,6 +17,7 @@ import {observer} from "mobx-react-lite";
 import {MapContext} from "../stores/mapStore";
 import {displayResultOverlay, refreshMap} from "../services/googleMapsService";
 import {Legend} from "./legend";
+import {Manual} from "./manual";
 
 
 export const NavBar = observer(() => {
@@ -114,6 +115,7 @@ export const NavBar = observer(() => {
                     <Button marginLeft={'20px'} onClick={onOpen} colorScheme="green">New Calculation</Button> : <Legend/>}
                 <Spacer/>
                 <Button colorScheme="red" onClick={onClearClick}>Clear</Button>
+                <Manual/>
             </Flex>
             <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay/>
