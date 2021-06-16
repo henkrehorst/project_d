@@ -96,7 +96,7 @@ class Algorithm(Resource):
 def disableCors(response):
     response.headers['Access-Control-Allow-Origin'] = '*'
     response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
-    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
+    response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,OPTIONS,DELETE')
     return response
 
 api.add_resource(delImage, "/delete/<int:imgId>")
