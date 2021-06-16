@@ -11,7 +11,7 @@ app = Flask(__name__)
 api = Api(app)
 
 class delImage(Resource):
-    def get(self, imgId):
+    def post(self, imgId):
         db.delItem(imgId)
         return '', http.HTTPStatus.NO_CONTENT
 
