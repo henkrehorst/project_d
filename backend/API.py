@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify
 from flask_restful import Api, Resource
 from threading import Thread
 import datetime
-import json
+import http
 
 import db
 from Calculator import Calculation
@@ -10,6 +10,10 @@ from Calculator import Calculation
 app = Flask(__name__)
 api = Api(app)
 
+class delImage(Resource):
+    def get(self, imgId):
+        db.delItem(imgId)
+        return '', http.HTTPStatus.NO_CONTENT
 
 class data(Resource):
     def get(self):
@@ -95,7 +99,7 @@ def disableCors(response):
     response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE')
     return response
 
-
+api.add_resource(delImage, "/delete/<int:imgId>")
 api.add_resource(data, "/data")
 api.add_resource(History, "/history/<int:duneId>")
 api.add_resource(Image, "/image/<int:imgId>")

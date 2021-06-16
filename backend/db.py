@@ -122,3 +122,27 @@ def getOneCal(imgId):
             return "Database does not exist"
         else:
             return err
+
+def delItem(imgId):
+    try:
+        mydb = mysql.connector.connect(user="root", password="root", host="localhost", database="project_d")
+        cursor = mydb.cursor()
+
+        Delete_Image = "DELETE FROM algorithmimage WHERE Id = %s"
+
+        cursor.execute(Delete_Image % (imgId))
+
+        mydb.commit()
+
+        # Close contections
+        cursor.close()
+        mydb.close()
+        
+
+    except mysql.connector.Error as err:
+        if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
+            return "Something is wrong with your user name or password"
+        elif err.errno == errorcode.ER_BAD_DB_ERROR:
+            return "Database does not exist"
+        else:
+            return err
