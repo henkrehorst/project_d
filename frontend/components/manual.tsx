@@ -15,7 +15,6 @@ export const Manual = () => {
         <>
             <IconButton marginLeft={3} onClick={onOpen} icon={<InfoIcon/>} colorScheme={'blue'} aria-label={'help'}/>
             <Modal
-                isCentered
                 onClose={onClose}
                 isOpen={isOpen}
                 motionPreset="slideInBottom"
